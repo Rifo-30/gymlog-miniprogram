@@ -1,0 +1,385 @@
+.workout-page {
+  padding-bottom: calc(340rpx + env(safe-area-inset-bottom));
+}
+
+.workout-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-top: 8rpx;
+}
+
+.auto-save {
+  flex: none;
+  margin-left: 16rpx;
+  padding: 8rpx 14rpx;
+  border-radius: 999rpx;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 20rpx;
+}
+
+.exercise-card {
+  padding: 26rpx 24rpx;
+}
+
+.exercise-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 16rpx;
+}
+
+.exercise-name {
+  font-size: 34rpx;
+  font-weight: 700;
+}
+
+.more-btn {
+  width: 58rpx;
+  height: 58rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18rpx;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 28rpx;
+  letter-spacing: 2rpx;
+}
+
+.last-hint {
+  display: inline-flex;
+  padding: 8rpx 14rpx;
+  border-radius: 12rpx;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 22rpx;
+}
+
+.set-head,
+.set-row {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.set-head {
+  padding: 0 2rpx;
+}
+
+.set-head {
+  color: var(--muted);
+  font-size: 20rpx;
+}
+
+.set-index {
+  width: 52rpx;
+  flex: none;
+  text-align: center;
+  color: var(--muted);
+  font-size: 22rpx;
+}
+
+.set-field-label {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+}
+
+.set-field-label-wide {
+  flex: 2.1;
+}
+
+.set-check-label {
+  width: 76rpx;
+  flex: none;
+  text-align: center;
+}
+
+.set-delete-space {
+  width: 40rpx;
+  flex: none;
+}
+
+.set-row {
+  margin-top: 10rpx;
+  padding: 8rpx 0;
+  border-radius: 18rpx;
+}
+
+.set-row.done {
+  background: var(--primary-soft);
+}
+
+.set-field {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rpx;
+}
+
+.set-field-wide {
+  flex: 2.1;
+}
+
+.step-btn {
+  width: 42rpx;
+  height: 56rpx;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14rpx;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 30rpx;
+}
+
+.set-input {
+  flex: 1;
+  min-width: 0;
+  height: 62rpx;
+  padding: 0 2rpx;
+  text-align: center;
+  color: var(--text);
+  font-size: 28rpx;
+  font-weight: 650;
+}
+
+.check-btn {
+  width: 68rpx;
+  height: 62rpx;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18rpx;
+  background: var(--surface-2);
+  border: 1rpx solid var(--border);
+  color: var(--muted);
+  font-size: 32rpx;
+  font-weight: 700;
+}
+
+.check-btn.checked {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-ink);
+}
+
+.set-delete {
+  width: 40rpx;
+  height: 52rpx;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 28rpx;
+}
+
+.exercise-actions {
+  display: flex;
+  gap: 12rpx;
+  padding-top: 16rpx;
+  border-top: 1rpx solid var(--border);
+}
+
+.mini-action {
+  flex: 1;
+  min-width: 0;
+  height: 66rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18rpx;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 23rpx;
+  font-weight: 650;
+}
+
+.mini-action.ghost {
+  background: var(--surface-2);
+  color: var(--text-2);
+}
+
+.note-input {
+  width: 100%;
+  min-height: 112rpx;
+  padding: 18rpx 20rpx;
+  border-radius: 18rpx;
+  background: var(--surface-2);
+  border: 1rpx solid var(--border);
+  color: var(--text);
+  font-size: 25rpx;
+  line-height: 1.5;
+}
+
+.session-note {
+  padding: 24rpx;
+}
+
+.workout-bottom {
+  z-index: 30;
+}
+
+.rest-bar {
+  padding: 20rpx 22rpx;
+  border-radius: 24rpx;
+  background: var(--surface-2);
+  border: 1rpx solid var(--border);
+  box-shadow: 0 12rpx 36rpx var(--shadow);
+}
+
+.rest-dot {
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 0 8rpx var(--primary-soft);
+}
+
+.rest-label {
+  color: var(--text);
+  font-size: 27rpx;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.rest-btn {
+  min-width: 68rpx;
+  height: 52rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12rpx;
+  border-radius: 14rpx;
+  background: var(--surface);
+  border: 1rpx solid var(--border);
+  color: var(--text-2);
+  font-size: 21rpx;
+}
+
+.rest-btn.skip {
+  color: var(--primary);
+  background: var(--primary-soft);
+  border-color: transparent;
+}
+
+.gap-10 {
+  gap: 10rpx;
+}
+
+.cardio-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.cardio-mode {
+  width: 300rpx;
+  flex: none;
+}
+
+.cardio-main-grid,
+.cardio-interval-grid {
+  display: flex;
+  gap: 14rpx;
+}
+
+.cardio-interval-grid {
+  flex-wrap: wrap;
+}
+
+.cardio-field {
+  flex: 1;
+  min-width: 0;
+}
+
+.cardio-interval-grid .cardio-field {
+  min-width: 190rpx;
+}
+
+.time-input-row {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+  min-height: 68rpx;
+  padding: 0 12rpx;
+  border-radius: 18rpx;
+  background: var(--surface-2);
+  border: 1rpx solid var(--border);
+}
+
+.time-input {
+  width: 60rpx;
+  height: 62rpx;
+  text-align: center;
+  color: var(--text);
+  font-size: 25rpx;
+  font-weight: 650;
+}
+
+.time-unit {
+  color: var(--muted);
+  font-size: 20rpx;
+}
+
+.compact-input {
+  width: 100%;
+  height: 68rpx;
+  padding: 0 16rpx;
+  border-radius: 18rpx;
+  background: var(--surface-2);
+  border: 1rpx solid var(--border);
+  color: var(--text);
+  font-size: 25rpx;
+}
+
+.cardio-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14rpx 18rpx;
+  border-radius: 16rpx;
+  background: var(--surface-2);
+}
+
+.cardio-total-value {
+  color: var(--primary);
+  font-size: 27rpx;
+  font-weight: 700;
+}
+
+.cardio-extra {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14rpx;
+  padding-top: 2rpx;
+}
+
+.mini-field {
+  flex: 1;
+  min-width: 150rpx;
+}
+
+.cardio-summary {
+  padding: 16rpx 18rpx;
+  border-radius: 18rpx;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 24rpx;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.cardio-field-hint {
+  margin-top: 6rpx;
+  color: var(--muted);
+  font-size: 19rpx;
+  line-height: 1.4;
+}

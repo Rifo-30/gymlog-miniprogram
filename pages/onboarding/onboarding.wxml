@@ -1,0 +1,55 @@
+<view class="page theme-{{theme}} onboarding">
+  <view class="brand">
+    <view class="brand-mark">练</view>
+    <view class="brand-name">练记</view>
+    <view class="brand-sub">把每一次训练，变成下一次的底气。</view>
+  </view>
+
+  <view class="card welcome-card">
+    <view class="h2">先设置几个偏好</view>
+    <view class="muted mt-8">以后都可以在“我的”里修改。</view>
+
+    <view class="setting-block">
+      <view class="section-title">重量单位</view>
+      <view class="segmented mt-12">
+        <view class="segment {{settings.unit === 'kg' ? 'active' : ''}}" data-value="kg" bindtap="selectUnit">公斤 kg</view>
+        <view class="segment {{settings.unit === 'lb' ? 'active' : ''}}" data-value="lb" bindtap="selectUnit">磅 lb</view>
+      </view>
+    </view>
+
+    <view class="setting-block">
+      <view class="section-title">主要目标</view>
+      <view class="chip-row mt-12">
+        <view wx:for="{{goals}}" wx:key="*this" class="chip {{settings.goal === item ? 'active' : ''}}" data-value="{{item}}" bindtap="selectGoal">{{item}}</view>
+      </view>
+    </view>
+
+    <view class="setting-block">
+      <view class="section-title">训练经验</view>
+      <view class="chip-row mt-12">
+        <view wx:for="{{experiences}}" wx:key="*this" class="chip {{settings.experience === item ? 'active' : ''}}" data-value="{{item}}" bindtap="selectExperience">{{item}}</view>
+      </view>
+    </view>
+
+    <view class="setting-block">
+      <view class="row between">
+        <view>
+          <view class="section-title">每周目标</view>
+          <view class="section-sub">先定一个容易坚持的次数</view>
+        </view>
+        <view class="goal-stepper">
+          <view class="goal-step" data-delta="-1" bindtap="adjustGoal">−</view>
+          <view class="goal-value num">{{weeklyGoal}}</view>
+          <view class="goal-step" data-delta="1" bindtap="adjustGoal">+</view>
+        </view>
+      </view>
+    </view>
+
+    <button class="btn btn-primary btn-block mt-24" bindtap="finish">开始使用</button>
+    <view class="skip" bindtap="skip">先随便看看</view>
+  </view>
+
+  <!-- <view class="onboarding-foot">
+    <view class="tiny muted">训练数据默认保存在本机，不公开、不社交。</view>
+  </view> -->
+</view>

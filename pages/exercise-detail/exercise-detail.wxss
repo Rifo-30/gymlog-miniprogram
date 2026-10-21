@@ -1,0 +1,124 @@
+.exercise-detail-page {
+  padding-bottom: 48rpx;
+}
+
+.big-mark {
+  width: 88rpx;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 26rpx;
+  background: var(--primary);
+  color: var(--primary-ink);
+  font-size: 34rpx;
+  font-weight: 800;
+}
+
+.pr-value {
+  color: var(--primary);
+  font-size: 34rpx;
+  font-weight: 750;
+}
+
+.chart-card {
+  padding: 28rpx 20rpx 18rpx;
+}
+
+.bar-chart {
+  height: 260rpx;
+  display: flex;
+  align-items: flex-end;
+  gap: 12rpx;
+}
+
+.bar-column {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8rpx;
+}
+
+.bar-value {
+  font-size: 18rpx;
+  white-space: nowrap;
+}
+
+.bar-track {
+  width: 100%;
+  height: 150rpx;
+  display: flex;
+  align-items: flex-end;
+  border-radius: 8rpx;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+.bar-fill {
+  width: 100%;
+  min-height: 4rpx;
+  border-radius: 8rpx;
+  background: var(--primary);
+}
+
+.bar-label {
+  font-size: 18rpx;
+}
+
+.history-name {
+  font-size: 28rpx;
+  font-weight: 650;
+}
+
+.history-best {
+  color: var(--primary);
+  font-size: 24rpx;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.note-preview {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 22rpx;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.cardio-history-summary {
+  padding: 10rpx 14rpx;
+  border-radius: 14rpx;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 22rpx;
+  line-height: 1.5;
+}
+
+.exercise-detail-page .stat-value {
+  font-size: 30rpx;
+}
+
+.exercise-detail-page .stat-card {
+  min-height: 132rpx;
+}
+
+.history-best {
+  max-width: 190rpx;
+  text-align: right;
+  line-height: 1.25;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.exercise-detail-page .list-item:active {
+  opacity: 0.72;
+}
+
+.chart-card .bar-chart {
+  padding-top: 4rpx;
+}

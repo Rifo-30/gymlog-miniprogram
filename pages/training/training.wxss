@@ -1,0 +1,101 @@
+.training-page {
+  padding-bottom: 28rpx;
+}
+
+.live-dot {
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 0 8rpx var(--primary-soft);
+}
+
+.action-grid {
+  display: flex;
+  gap: 16rpx;
+}
+
+.action-card {
+  flex: 1;
+  min-height: 210rpx;
+  padding: 24rpx;
+  border-radius: 28rpx;
+  background: var(--surface);
+  border: 1rpx solid var(--border);
+}
+
+.action-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-ink);
+}
+
+.action-icon {
+  width: 54rpx;
+  height: 54rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18rpx;
+  background: rgba(255, 255, 255, 0.18);
+  font-size: 34rpx;
+  font-weight: 700;
+}
+
+.action-card:not(.action-primary) .action-icon {
+  background: var(--surface-2);
+  color: var(--primary);
+}
+
+.action-title {
+  margin-top: 24rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+}
+
+.action-desc {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  opacity: 0.68;
+}
+
+.muscle-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14rpx;
+}
+
+.muscle-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 92rpx;
+  padding: 0 24rpx;
+  border-radius: 24rpx;
+  background: var(--surface);
+  border: 1rpx solid var(--border);
+}
+
+.muscle-name {
+  font-size: 28rpx;
+  font-weight: 650;
+}
+
+.muscle-arrow {
+  color: var(--muted);
+  font-size: 26rpx;
+}
+
+.exercise-name {
+  font-size: 29rpx;
+  font-weight: 650;
+}
+
+.action-card:active,
+.muscle-card:active {
+  background: var(--surface-2);
+}
+
+.action-primary:active {
+  opacity: 0.9;
+}

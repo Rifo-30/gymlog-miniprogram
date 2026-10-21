@@ -1,0 +1,90 @@
+<view class="page theme-{{theme}} exercise-detail-page">
+  <view wx:if="{{exercise}}">
+    <view class="page-top">
+      <view class="row gap-12">
+        <view class="big-mark">{{exercise.initial}}</view>
+        <view class="grow">
+          <view class="h1">{{exercise.name}}</view>
+          <view class="muted small mt-8">{{exercise.muscle}} · {{exercise.equipment}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="stat-grid mt-24">
+      <view class="stat-card">
+        <view class="stat-value num">{{stats.sessions}}</view>
+        <view class="stat-label">训练次数</view>
+      </view>
+      <view class="stat-card">
+        <view class="stat-value num">{{exercise.type === 'cardio' ? stats.totalCardioDurationLabel : stats.sets}}</view>
+        <view class="stat-label">{{exercise.type === 'cardio' ? '总时长' : '完成组数'}}</view>
+      </view>
+      <view class="stat-card">
+        <view class="stat-value num">{{exercise.type === 'cardio' ? stats.totalCardioDistanceLabel : (exercise.type === 'weight_reps' ? stats.bestWeightLabel : (exercise.type === 'time' ? stats.bestDurationLabel : stats.bestRepsLabel))}}</view>
+        <view class="stat-label">{{exercise.type === 'cardio' ? '总距离' : '最佳表现'}}</view>
+      </view>
+    </view>
+
+    <view wx:if="{{exercise.type === 'weight_reps'}}" class="card mt-24">
+      <view class="row between">
+        <view>
+          <view class="section-title">估算 1RM</view>
+          <view class="section-sub">根据最佳组计算，仅作趋势参考</view>
+        </view>
+        <view class="pr-value num">{{stats.bestE1rmLabel}}</view>
+      </view>
+    </view>
+
+    <view class="section-head">
+      <view>
+        <view class="section-title">最近趋势</view>
+        <view class="section-sub">每根柱子代表一次训练</view>
+      </view>
+    </view>
+
+    <view wx:if="{{trend.length}}" class="card chart-card">
+      <view class="bar-chart">
+        <view wx:for="{{trend}}" wx:key="label" class="bar-column">
+          <view class="bar-value tiny muted num">{{item.valueLabel}}</view>
+          <view class="bar-track">
+            <view class="bar-fill" style="height: {{item.height}}%;"></view>
+          </view>
+          <view class="bar-label tiny muted">{{item.label}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view wx:else class="empty mt-16">
+      <view class="empty-title">还没有趋势</view>
+      <view class="empty-desc">完成几次这个动作后，这里会出现重量或次数变化。</view>
+    </view>
+
+    <view class="section-head">
+      <view>
+        <view class="section-title">历史记录</view>
+        <view class="section-sub">按时间倒序</view>
+      </view>
+    </view>
+
+    <view wx:if="{{history.length}}" class="card card-flat">
+      <view wx:for="{{history}}" wx:key="id" class="list-item" data-id="{{item.id}}" bindtap="openWorkout">
+        <view class="row between">
+          <view class="grow">
+            <view class="history-name">{{item.name}}</view>
+            <view class="muted tiny mt-8">{{item.dateLabel}} · {{item.setsLabel}}</view>
+            <view wx:if="{{item.cardioSummary}}" class="cardio-history-summary mt-8">{{item.cardioSummary}}</view>
+            <view wx:if="{{item.note}}" class="note-preview mt-8">{{item.note}}</view>
+          </view>
+          <view class="history-best num">{{item.bestLabel}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view wx:else class="empty mt-16">
+      <view class="empty-title">还没有历史记录</view>
+      <view class="empty-desc">从一次训练开始，建立这个动作的进步曲线。</view>
+    </view>
+
+    <button class="btn btn-primary btn-block mt-24" bindtap="startWorkout">用这个动作开始训练</button>
+  </view>
+</view>

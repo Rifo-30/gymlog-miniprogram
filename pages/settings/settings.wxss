@@ -1,0 +1,286 @@
+.settings-page {
+  padding-bottom: 28rpx;
+}
+
+.profile-card {
+  padding: 30rpx;
+}
+
+.profile-mark {
+  width: 86rpx;
+  height: 86rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 26rpx;
+  background: var(--primary);
+  color: var(--primary-ink);
+  font-size: 36rpx;
+  font-weight: 800;
+}
+
+.profile-stats {
+  display: flex;
+  padding: 20rpx 0 4rpx;
+  border-top: 1rpx solid var(--border);
+}
+
+.profile-stat {
+  flex: 1;
+  text-align: center;
+}
+
+.profile-stat-value {
+  font-size: 34rpx;
+  font-weight: 750;
+}
+
+.profile-stat-label {
+  margin-top: 4rpx;
+  color: var(--muted);
+  font-size: 20rpx;
+}
+
+.setting-card {
+  padding: 0 24rpx;
+}
+
+.setting-row {
+  min-height: 108rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18rpx;
+  border-bottom: 1rpx solid var(--border);
+}
+
+.setting-row:last-child {
+  border-bottom: none;
+}
+
+.setting-name {
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.setting-desc {
+  margin-top: 5rpx;
+  color: var(--muted);
+  font-size: 21rpx;
+}
+
+.setting-value {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  color: var(--text-2);
+  font-size: 24rpx;
+  white-space: nowrap;
+}
+
+.goal-stepper {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+  padding: 5rpx;
+  border-radius: 18rpx;
+  background: var(--surface-2);
+  border: 1rpx solid var(--border);
+}
+
+.goal-step {
+  width: 52rpx;
+  height: 52rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14rpx;
+  background: var(--surface);
+  color: var(--text-2);
+  font-size: 30rpx;
+}
+
+.goal-value {
+  width: 54rpx;
+  text-align: center;
+  font-size: 26rpx;
+  font-weight: 700;
+}
+
+.settings-foot {
+  padding: 36rpx 0 20rpx;
+}
+
+.sync-action {
+  color: var(--primary);
+  font-size: 23rpx;
+  font-weight: 650;
+}
+
+.cloud-card {
+  padding: 26rpx 24rpx;
+}
+
+.cloud-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  background: var(--muted);
+  box-shadow: 0 0 0 8rpx var(--surface-3);
+}
+
+.cloud-dot.success {
+  background: var(--success);
+  box-shadow: 0 0 0 8rpx rgba(126, 231, 135, 0.12);
+}
+
+.cloud-dot.pending {
+  background: #FFD166;
+  box-shadow: 0 0 0 8rpx rgba(255, 209, 102, 0.12);
+}
+
+.cloud-dot.error {
+  background: var(--danger);
+  box-shadow: 0 0 0 8rpx var(--danger-soft);
+}
+
+.sync-state {
+  color: var(--muted);
+  font-size: 21rpx;
+}
+
+.cloud-meta {
+  padding-top: 18rpx;
+  border-top: 1rpx solid var(--border);
+}
+
+.profile-avatar-img {
+  width: 86rpx;
+  height: 86rpx;
+  flex: none;
+  border-radius: 26rpx;
+  background: var(--surface-2);
+}
+
+.profile-edit {
+  align-self: flex-start;
+  padding: 8rpx 14rpx;
+  border-radius: 999rpx;
+  background: var(--surface-2);
+  color: var(--primary);
+  font-size: 21rpx;
+  font-weight: 600;
+}
+
+.modal-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  background: rgba(0, 0, 0, 0.62);
+}
+
+.profile-sheet {
+  width: 100%;
+  padding: 18rpx 30rpx calc(28rpx + env(safe-area-inset-bottom));
+  border-radius: 36rpx 36rpx 0 0;
+  background: var(--surface);
+  box-shadow: 0 -20rpx 60rpx rgba(0, 0, 0, 0.32);
+}
+
+.modal-close {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18rpx;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 34rpx;
+}
+
+.profile-editor-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 24rpx;
+}
+
+.avatar-picker {
+  width: 154rpx;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: transparent;
+}
+
+.avatar-preview,
+.avatar-placeholder {
+  width: 132rpx;
+  height: 132rpx;
+  border-radius: 36rpx;
+  background: var(--surface-2);
+}
+
+.avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary);
+  color: var(--primary-ink);
+  font-size: 50rpx;
+  font-weight: 800;
+}
+
+.avatar-pick-label {
+  margin-top: 10rpx;
+  color: var(--primary);
+  font-size: 21rpx;
+}
+
+.wechat-profile-link {
+  color: var(--primary);
+  font-size: 22rpx;
+}
+
+.setting-row:active,
+.profile-edit:active,
+.sync-action:active {
+  opacity: 0.7;
+}
+
+.profile-stats {
+  gap: 8rpx;
+}
+
+.profile-stat {
+  padding: 0 8rpx;
+}
+
+.sync-action {
+  padding: 10rpx 0 10rpx 16rpx;
+}
+
+.profile-sheet .btn {
+  height: 84rpx;
+}
+
+.profile-sheet .field-label {
+  margin-bottom: 12rpx;
+}
+
+.profile-meta {
+  color: var(--text-2);
+}
+
+.profile-body-grid {
+  display: flex;
+  gap: 14rpx;
+}
+
+.profile-body-grid .mini-field {
+  flex: 1;
+  min-width: 0;
+}

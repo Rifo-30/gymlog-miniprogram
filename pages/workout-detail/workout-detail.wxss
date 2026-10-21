@@ -1,0 +1,174 @@
+.detail-page {
+  padding-bottom: 48rpx;
+}
+
+.summary-hero {
+  padding: 32rpx 0 14rpx;
+  text-align: center;
+}
+
+.summary-check {
+  width: 100rpx;
+  height: 100rpx;
+  margin: 0 auto 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--primary-ink);
+  font-size: 48rpx;
+  font-weight: 800;
+  box-shadow: 0 0 0 16rpx var(--primary-soft);
+}
+
+.summary-kicker {
+  color: var(--primary);
+  font-size: 19rpx;
+  font-weight: 800;
+  letter-spacing: 4rpx;
+}
+
+.detail-hero {
+  padding: 16rpx 0 4rpx;
+}
+
+.volume-value {
+  color: var(--primary);
+  font-size: 34rpx;
+  font-weight: 750;
+}
+
+.pr-card {
+  border-color: rgba(199, 255, 61, 0.28);
+}
+
+.pr-item {
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid var(--border);
+}
+
+.pr-item:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.pr-name {
+  font-size: 28rpx;
+  font-weight: 650;
+}
+
+.pr-value {
+  color: var(--primary);
+  font-size: 28rpx;
+  font-weight: 750;
+}
+
+.detail-exercise {
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid var(--border);
+}
+
+.detail-exercise:first-child {
+  padding-top: 0;
+}
+
+.detail-exercise:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.detail-ex-name {
+  font-size: 30rpx;
+  font-weight: 650;
+}
+
+.set-lines {
+  padding: 12rpx 16rpx;
+  border-radius: 16rpx;
+  background: var(--surface-2);
+}
+
+.set-line {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 5rpx 0;
+}
+
+.set-line-index {
+  width: 40rpx;
+  color: var(--muted);
+  font-size: 21rpx;
+}
+
+.set-line-value {
+  color: var(--text-2);
+  font-size: 25rpx;
+}
+
+.detail-note {
+  padding: 12rpx 16rpx;
+  border-radius: 14rpx;
+  background: var(--primary-soft);
+  color: var(--text-2);
+  font-size: 23rpx;
+}
+
+.action-stack {
+  padding-bottom: 20rpx;
+}
+
+.help-link {
+  color: var(--primary);
+  font-size: 23rpx;
+  font-weight: 600;
+}
+
+.history-link {
+  color: var(--primary);
+  font-size: 23rpx;
+  font-weight: 600;
+}
+
+.cardio-overview {
+  border-color: rgba(199, 255, 61, 0.22);
+}
+
+.cardio-detail-summary {
+  padding: 14rpx 16rpx;
+  border-radius: 16rpx;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 24rpx;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.detail-page .stat-value {
+  font-size: 31rpx;
+}
+
+.detail-page .stat-card {
+  min-height: 132rpx;
+}
+
+.pr-value {
+  max-width: 220rpx;
+  margin-left: 14rpx;
+  text-align: right;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.detail-exercise:active {
+  opacity: 0.76;
+}
+
+.action-stack .btn + .btn {
+  margin-top: 12rpx;
+}
+
+.action-stack .row .btn {
+  margin-top: 0;
+}

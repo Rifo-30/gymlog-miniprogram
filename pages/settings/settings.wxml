@@ -1,0 +1,209 @@
+<view class="page with-tabbar theme-{{theme}} settings-page">
+  <!-- <view class="page-top">
+    <view class="h1">我的</view>
+    <view class="muted small mt-8">训练偏好、数据与隐私。</view>
+  </view> -->
+
+  <view class="card profile-card mt-24">
+    <view class="row gap-16">
+      <image wx:if="{{displayAvatarUrl}}" class="profile-avatar-img" src="{{displayAvatarUrl}}" mode="aspectFill"></image>
+      <view wx:else class="profile-mark">练</view>
+      <view class="grow">
+        <view class="h2">{{profile.nickName || '微信用户'}}</view>
+        <view class="muted tiny mt-8">{{cloudStatusLabel}} · 数据默认仅自己可见</view>
+        <view wx:if="{{profileMetaLabel}}" class="profile-meta tiny mt-8">{{profileMetaLabel}}</view>
+      </view>
+      <view class="profile-edit" bindtap="openProfileEditor">编辑资料</view>
+    </view>
+    <view class="profile-stats mt-24">
+      <view class="profile-stat">
+        <view class="profile-stat-value num">{{stats.workouts}}</view>
+        <view class="profile-stat-label">次训练</view>
+      </view>
+      <view class="profile-stat">
+        <view class="profile-stat-value num">{{stats.sets}}</view>
+        <view class="profile-stat-label">组记录</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section-head">
+    <view>
+      <view class="section-title">云同步</view>
+      <view class="section-sub">微信登录后自动同步到云端</view>
+    </view>
+    <view class="sync-action" bindtap="syncNow">立即同步</view>
+  </view>
+
+  <view class="card cloud-card">
+    <view class="row between">
+      <view class="row gap-12">
+        <view class="cloud-dot {{cloudStatusClass}}"></view>
+        <view>
+          <view class="setting-name">{{cloudStatusLabel}}</view>
+          <view class="setting-desc">{{cloudStatusDesc}}</view>
+        </view>
+      </view>
+      <view class="sync-state">{{cloudStatus === 'syncing' ? '同步中…' : (cloudStatus === 'synced' ? '已连接' : '')}}</view>
+    </view>
+    <view class="cloud-meta mt-16">
+      <view class="row between">
+        <view class="tiny muted">微信身份</view>
+        <view class="tiny text-2">{{openidShort || '未连接'}}</view>
+      </view>
+      <view class="row between mt-8">
+        <view class="tiny muted">上次同步</view>
+        <view class="tiny text-2">{{lastSyncLabel}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section-head">
+    <view class="section-title">训练偏好</view>
+  </view>
+
+  <view class="card card-flat setting-card">
+    <picker mode="selector" range="{{unitOptions}}" value="{{unitIndex}}" bindchange="changeUnit">
+      <view class="setting-row">
+        <view>
+          <view class="setting-name">重量单位</view>
+          <view class="setting-desc">已有数据会按单位换算显示</view>
+        </view>
+        <view class="setting-value">{{settings.unit}} <text class="chevron">›</text></view>
+      </view>
+    </picker>
+    <picker mode="selector" range="{{restOptions}}" value="{{restIndex}}" bindchange="changeRest">
+      <view class="setting-row">
+        <view>
+          <view class="setting-name">默认休息</view>
+          <view class="setting-desc">完成一组后自动开始计时</view>
+        </view>
+        <view class="setting-value">{{settings.restSeconds}} 秒 <text class="chevron">›</text></view>
+      </view>
+    </picker>
+    <view class="setting-row">
+      <view>
+        <view class="setting-name">每周训练目标</view>
+        <view class="setting-desc">首页会显示完成进度</view>
+      </view>
+      <view class="goal-stepper">
+        <view class="goal-step" data-delta="-1" bindtap="adjustGoal">−</view>
+        <view class="goal-value num">{{settings.weeklyGoal}}</view>
+        <view class="goal-step" data-delta="1" bindtap="adjustGoal">+</view>
+      </view>
+    </view>
+    <picker mode="selector" range="{{themeOptions}}" range-key="label" value="{{themeIndex}}" bindchange="changeTheme">
+      <view class="setting-row">
+        <view>
+          <view class="setting-name">外观</view>
+          <view class="setting-desc">深色更适合健身房光线</view>
+        </view>
+        <view class="setting-value">{{themeOptions[themeIndex].label}} <text class="chevron">›</text></view>
+      </view>
+    </picker>
+  </view>
+
+  <view class="section-head">
+    <view class="section-title">数据</view>
+  </view>
+
+  <view class="card card-flat setting-card">
+    <view class="setting-row" bindtap="exportJSON">
+      <view>
+        <view class="setting-name">复制 JSON</view>
+        <view class="setting-desc">完整备份，包含训练记录和设置</view>
+      </view>
+      <view class="chevron">›</view>
+    </view>
+    <view class="setting-row" bindtap="exportCSV">
+      <view>
+        <view class="setting-name">复制 CSV</view>
+        <view class="setting-desc">可直接粘贴到表格软件分析</view>
+      </view>
+      <view class="chevron">›</view>
+    </view>
+  </view>
+
+  <view class="section-head">
+    <view class="section-title">开发调试</view>
+  </view>
+
+  <view class="card card-flat setting-card">
+    <view class="setting-row" bindtap="loadDemo">
+      <view>
+        <view class="setting-name">加载演示数据</view>
+        <view class="setting-desc">生成几次示例训练，方便查看统计效果</view>
+      </view>
+      <view class="chevron">›</view>
+    </view>
+    <view class="setting-row" bindtap="clearData">
+      <view>
+        <view class="setting-name text-danger">清空全部数据</view>
+        <view class="setting-desc">删除后无法恢复</view>
+      </view>
+      <view class="chevron">›</view>
+    </view>
+  </view>
+
+  <view class="section-head">
+    <view class="section-title">关于</view>
+  </view>
+
+  <view class="card card-flat setting-card">
+    <view class="setting-row" bindtap="showPrivacy">
+      <view class="setting-name">数据与隐私</view>
+      <view class="chevron">›</view>
+    </view>
+    <view class="setting-row" bindtap="showAbout">
+      <view class="setting-name">关于练记</view>
+      <view class="chevron">›</view>
+    </view>
+  </view>
+
+  <view class="settings-foot tiny muted center-text">
+    v1.0 MVP · 本地优先 + 云同步
+  </view>
+
+  <view wx:if="{{showProfileEditor}}" class="modal-mask" catchtap="closeProfileEditor">
+    <view class="profile-sheet" catchtap="noop">
+      <view class="grabber"></view>
+      <view class="row between">
+        <view>
+          <view class="h2">微信资料</view>
+          <view class="tiny muted mt-8">头像和昵称会显示在“我的”，并同步到云端。</view>
+        </view>
+        <view class="modal-close" bindtap="closeProfileEditor">×</view>
+      </view>
+
+      <view class="profile-editor-row mt-24">
+        <button class="avatar-picker" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+          <image wx:if="{{draftProfile.avatarUrl}}" class="avatar-preview" src="{{draftProfile.avatarUrl}}" mode="aspectFill"></image>
+          <view wx:else class="avatar-placeholder">练</view>
+          <view class="avatar-pick-label">更换头像</view>
+        </button>
+        <view class="grow">
+          <view class="field-label">昵称</view>
+          <input class="input" type="nickname" value="{{draftProfile.nickName}}" placeholder="点击使用微信昵称" placeholder-class="input-placeholder" bindinput="onNicknameInput" />
+          <view class="wechat-profile-link mt-12" bindtap="useWechatProfile">尝试使用微信资料</view>
+        </view>
+      </view>
+
+      <view class="profile-body-grid mt-16">
+        <view class="mini-field">
+          <view class="field-label">身高 cm</view>
+          <input class="input" type="digit" value="{{draftProfile.heightCm}}" placeholder="例如 175" placeholder-class="input-placeholder" data-field="heightCm" bindinput="onProfileFieldInput" />
+        </view>
+        <view class="mini-field">
+          <view class="field-label">体重 kg</view>
+          <input class="input" type="digit" value="{{draftProfile.weightKg}}" placeholder="例如 70.5" placeholder-class="input-placeholder" data-field="weightKg" bindinput="onProfileFieldInput" />
+        </view>
+      </view>
+      <view class="tiny muted mt-8">体重用于估算跑步机有氧消耗热量。</view>
+
+      <view class="row gap-12 mt-24">
+        <button class="btn btn-ghost grow" bindtap="closeProfileEditor">取消</button>
+        <button class="btn btn-primary grow" bindtap="saveProfile">保存</button>
+      </view>
+    </view>
+  </view>
+</view>

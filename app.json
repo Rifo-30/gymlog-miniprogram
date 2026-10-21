@@ -1,0 +1,62 @@
+{
+  "pages": [
+    "pages/onboarding/onboarding",
+    "pages/home/home",
+    "pages/training/training",
+    "pages/workout/workout",
+    "pages/exercise-picker/exercise-picker",
+    "pages/exercise-detail/exercise-detail",
+    "pages/history/history",
+    "pages/workout-detail/workout-detail",
+    "pages/stats/stats",
+    "pages/settings/settings"
+  ],
+  "window": {
+    "navigationBarTitleText": "练记",
+    "navigationBarBackgroundColor": "#0B0D10",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#0B0D10",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#7D8592",
+    "selectedColor": "#C7FF3D",
+    "backgroundColor": "#0B0D10",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页",
+        "iconPath": "assets/tab/home.png",
+        "selectedIconPath": "assets/tab/home-active.png"
+      },
+      {
+        "pagePath": "pages/training/training",
+        "text": "训练",
+        "iconPath": "assets/tab/training.png",
+        "selectedIconPath": "assets/tab/training-active.png"
+      },
+      {
+        "pagePath": "pages/history/history",
+        "text": "历史",
+        "iconPath": "assets/tab/history.png",
+        "selectedIconPath": "assets/tab/history-active.png"
+      },
+      {
+        "pagePath": "pages/stats/stats",
+        "text": "统计",
+        "iconPath": "assets/tab/stats.png",
+        "selectedIconPath": "assets/tab/stats-active.png"
+      },
+      {
+        "pagePath": "pages/settings/settings",
+        "text": "我的",
+        "iconPath": "assets/tab/settings.png",
+        "selectedIconPath": "assets/tab/settings-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

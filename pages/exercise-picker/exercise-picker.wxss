@@ -1,0 +1,147 @@
+.picker-page {
+  height: 100vh;
+  padding: 28rpx 28rpx 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.picker-header {
+  flex: none;
+  position: relative;
+  z-index: 2;
+  padding-bottom: 16rpx;
+  background: var(--bg);
+  border-bottom: 1rpx solid var(--border);
+}
+
+.exercise-scroll {
+  flex: 1;
+  height: 0;
+  min-height: 0;
+}
+
+.exercise-scroll-inner {
+  padding: 16rpx 0 calc(52rpx + env(safe-area-inset-bottom));
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  height: 88rpx;
+  padding: 0 24rpx;
+  border-radius: 24rpx;
+  background: var(--surface);
+  border: 1rpx solid var(--border);
+}
+
+.search-icon {
+  margin-right: 12rpx;
+  color: var(--muted);
+  font-size: 32rpx;
+}
+
+.search-input {
+  flex: 1;
+  height: 100%;
+  color: var(--text);
+  font-size: 28rpx;
+}
+
+.muscle-scroll {
+  width: 100%;
+  white-space: nowrap;
+}
+
+.muscle-row {
+  display: inline-flex;
+  gap: 12rpx;
+}
+
+.exercise-list {
+  border-radius: 28rpx;
+  overflow: hidden;
+  border: 1rpx solid var(--border);
+  background: var(--surface);
+}
+
+.exercise-item {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+  padding: 22rpx 20rpx;
+  border-bottom: 1rpx solid var(--border);
+}
+
+.exercise-item:last-child {
+  border-bottom: none;
+}
+
+.exercise-icon {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20rpx;
+  background: var(--surface-2);
+  color: var(--primary);
+  font-size: 26rpx;
+  font-weight: 700;
+}
+
+.exercise-name-row {
+  flex-wrap: wrap;
+  row-gap: 6rpx;
+}
+
+.exercise-name {
+  font-size: 29rpx;
+  font-weight: 650;
+}
+
+.exercise-item:active {
+  background: var(--surface-2);
+}
+
+.add-mark {
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18rpx;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 34rpx;
+  font-weight: 500;
+}
+
+
+.item-actions {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  flex: none;
+}
+
+.pin-btn {
+  min-width: 84rpx;
+  height: 54rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10rpx;
+  border-radius: 14rpx;
+  background: var(--surface-2);
+  border: 1rpx solid var(--border);
+  color: var(--muted);
+  font-size: 19rpx;
+}
+
+.pin-btn.active {
+  background: var(--primary-soft);
+  border-color: rgba(199, 255, 61, 0.24);
+  color: var(--primary);
+  font-weight: 650;
+}

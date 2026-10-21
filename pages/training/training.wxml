@@ -1,0 +1,84 @@
+<view class="page with-tabbar theme-{{theme}} training-page">
+  <view class="page-top">
+    <view class="h1">训练</view>
+    <view class="muted small mt-8">从空白开始，或复用最近一次训练。</view>
+  </view>
+
+  <view wx:if="{{activeWorkout}}" class="card card-accent mt-24" bindtap="openActive">
+    <view class="row between">
+      <view class="row gap-12">
+        <view class="live-dot"></view>
+        <view class="text-primary bold">正在训练</view>
+      </view>
+      <view class="tiny muted num">{{activeWorkout.elapsedLabel}}</view>
+    </view>
+    <view class="row between mt-16">
+      <view>
+        <view class="h2">{{activeWorkout.name}}</view>
+        <view class="muted small mt-8">{{activeWorkout.exerciseCount}} 个动作 · {{activeWorkout.sets}} 组<text wx:if="{{activeWorkout.cardioCount}}"> · {{activeWorkout.cardioCount}} 项有氧</text></view>
+      </view>
+      <view class="text-primary small bold">继续 →</view>
+    </view>
+  </view>
+
+  <view class="action-grid mt-24">
+    <view class="action-card action-primary" bindtap="startBlank">
+      <view class="action-icon">＋</view>
+      <view class="action-title">空白训练</view>
+      <view class="action-desc">从第一个动作开始</view>
+    </view>
+    <view class="action-card" bindtap="repeatLast">
+      <view class="action-icon">↻</view>
+      <view class="action-title">复制上次</view>
+      <view class="action-desc">{{lastWorkout ? lastWorkout.name : '还没有历史训练'}}</view>
+    </view>
+  </view>
+
+  <view class="card mt-24" bindtap="openPicker">
+    <view class="row between">
+      <view>
+        <view class="section-title">动作库</view>
+        <view class="section-sub">搜索动作</view>
+      </view>
+      <view class="chevron">›</view>
+    </view>
+  </view>
+
+  <view class="section-head">
+    <view>
+      <view class="section-title">按肌群找动作</view>
+      <view class="section-sub">点击后直接开始一次训练</view>
+    </view>
+  </view>
+
+  <view class="muscle-grid">
+    <view wx:for="{{muscles}}" wx:key="*this" class="muscle-card" data-muscle="{{item}}" bindtap="openMuscle">
+      <view class="muscle-name">{{item}}</view>
+      <view class="muscle-arrow">→</view>
+    </view>
+  </view>
+
+  <view class="section-head">
+    <view>
+      <view class="section-title">最近动作</view>
+      <view class="section-sub">快速查看历史表现</view>
+    </view>
+  </view>
+
+  <view wx:if="{{recentExercises.length}}" class="card card-flat">
+    <view wx:for="{{recentExercises}}" wx:key="id" class="list-item exercise-row" data-id="{{item.id}}" bindtap="openExercise">
+      <view class="row between">
+        <view class="grow">
+          <view class="exercise-name">{{item.name}}</view>
+          <view class="muted tiny mt-8">{{item.muscle}} · {{item.equipment}} · 上次 {{item.lastLabel}}</view>
+        </view>
+        <view class="chevron">›</view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:else class="empty mt-24">
+    <view class="empty-title">还没有最近动作</view>
+    <view class="empty-desc">完成一次训练后，这里会出现你的常用动作。</view>
+  </view>
+</view>

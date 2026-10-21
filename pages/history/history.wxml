@@ -1,0 +1,59 @@
+<view class="page with-tabbar theme-{{theme}} history-page">
+  <view class="row between page-top">
+    <view>
+      <view class="h1">历史</view>
+      <view class="muted small mt-8">本月 {{monthCount}} 次训练</view>
+    </view>
+    <view class="chip" bindtap="goToday">回到本月</view>
+  </view>
+
+  <view class="calendar card mt-24">
+    <view class="calendar-head">
+      <view class="calendar-arrow" data-delta="-1" bindtap="changeMonth">‹</view>
+      <view class="month-label">{{monthLabel}}</view>
+      <view class="calendar-arrow" data-delta="1" bindtap="changeMonth">›</view>
+    </view>
+    <view class="weekday-row">
+      <view wx:for="{{weekdays}}" wx:key="*this" class="weekday">{{item}}</view>
+    </view>
+    <view class="calendar-grid">
+      <view wx:for="{{cells}}" wx:key="key" class="calendar-cell {{item.inMonth ? '' : 'out-month'}} {{item.isToday ? 'today' : ''}} {{item.isSelected ? 'selected' : ''}}" data-key="{{item.key}}" data-inmonth="{{item.inMonth}}" bindtap="selectDate">
+        <view class="calendar-day num">{{item.day}}</view>
+        <view class="calendar-dot {{item.hasWorkout ? 'show' : ''}}"></view>
+      </view>
+    </view>
+  </view>
+
+  <scroll-view scroll-x class="filter-scroll mt-16" show-scrollbar="{{false}}">
+    <view class="filter-row">
+      <view wx:for="{{filters}}" wx:key="*this" class="chip chip-soft {{filter === item ? 'active' : ''}}" data-filter="{{item}}" bindtap="selectFilter">{{item}}</view>
+    </view>
+  </scroll-view>
+
+  <view wx:if="{{selectedDate}}" class="row between mt-16">
+    <view class="small text-2">只看 {{selectedDateLabel}}</view>
+    <view class="tiny text-primary" bindtap="clearDate">查看整月</view>
+  </view>
+
+  <view wx:if="{{list.length}}" class="card card-flat mt-16">
+    <view wx:for="{{list}}" wx:key="id" class="list-item history-item" data-id="{{item.id}}" bindtap="openWorkout">
+      <view class="row between">
+        <view class="grow">
+          <view class="row gap-8">
+            <view class="history-name">{{item.name}}</view>
+            <view class="badge">{{item.badgeLabel}}</view>
+          </view>
+          <view class="muted tiny mt-8">{{item.dateLabel}} · {{item.timeLabel}} · {{item.durationLabel}}</view>
+          <view class="muted tiny mt-4">{{item.muscleLine}}</view>
+        </view>
+        <view class="history-volume num">{{item.metricLabel}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:else class="empty mt-24">
+    <view class="empty-title">这一天还没有记录</view>
+    <view class="empty-desc">可以选择其他日期，或者现在开始一次训练。</view>
+    <button class="btn btn-primary mt-20" bindtap="startWorkout">开始训练</button>
+  </view>
+</view>

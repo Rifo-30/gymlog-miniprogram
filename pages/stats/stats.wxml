@@ -1,0 +1,129 @@
+<view class="page with-tabbar theme-{{theme}} stats-page">
+  <view class="page-top">
+    <view class="h1">统计</view>
+    <view class="muted small mt-8">看见每一次积累。</view>
+  </view>
+
+  <view wx:if="{{hasWorkouts}}">
+    <view class="stat-grid mt-24">
+      <view class="stat-card">
+        <view class="stat-value num">{{weekly.count}}</view>
+        <view class="stat-label">本周训练</view>
+      </view>
+      <view class="stat-card">
+        <view class="stat-value num">{{weekly.sets}}</view>
+        <view class="stat-label">本周组数</view>
+      </view>
+      <view class="stat-card">
+        <view class="stat-value num">{{weeklyVolumeLabel}}</view>
+        <view class="stat-label">本周训练量</view>
+      </view>
+    </view>
+    <view wx:if="{{weekly.cardioSeconds}}" class="tiny muted mt-12">本周有氧总时长 {{weekly.cardioLabel}}</view>
+
+    <view class="card mt-24">
+      <view class="row between">
+        <view>
+          <view class="section-title">最近 4 周频率</view>
+          <view class="section-sub">每周完成的训练次数</view>
+        </view>
+        <view class="pill">{{weekly.count}} / {{weekly.goal}} 次</view>
+      </view>
+      <view class="week-chart mt-24">
+        <view wx:for="{{fourWeeks}}" wx:key="label" class="week-column">
+          <view class="week-value tiny num">{{item.count}}</view>
+          <view class="week-track">
+            <view class="week-fill" style="height: {{item.height}}%;"></view>
+          </view>
+          <view class="week-label tiny muted">{{item.label}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="section-head">
+      <view>
+        <view class="section-title">个人纪录</view>
+        <view class="section-sub">按最近达成时间排序</view>
+      </view>
+      <view class="help-link" bindtap="showPRHelp">PR 是什么？</view>
+    </view>
+
+    <view wx:if="{{prs.length}}" class="card card-flat">
+      <view wx:for="{{prs}}" wx:key="exerciseId" class="list-item pr-row" data-id="{{item.exerciseId}}" bindtap="openExercise">
+        <view class="row between">
+          <view class="grow">
+            <view class="row gap-8">
+              <view class="pr-name">{{item.exerciseName}}</view>
+              <view class="badge badge-primary">PR</view>
+            </view>
+            <view class="muted tiny mt-8">{{item.metricLabel}} · {{item.detail}} · {{item.dateLabel}}</view>
+          </view>
+          <view class="pr-value num">{{item.displayValue}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view wx:else class="empty mt-16">
+      <view class="empty-title">还没有 PR</view>
+      <view class="empty-desc">完成更多训练后，这里会记录你的最佳表现。</view>
+    </view>
+
+    <view class="section-head">
+      <view>
+        <view class="section-title">肌群分布</view>
+        <view class="section-sub">最近 28 天完成组数</view>
+      </view>
+    </view>
+
+    <view wx:if="{{muscleDist.length}}" class="card">
+      <view wx:for="{{muscleDist}}" wx:key="muscle" class="muscle-stat">
+        <view class="row between">
+          <view class="muscle-stat-name">{{item.muscle}}</view>
+          <view class="muted tiny">{{item.count}} 组 · {{item.percent}}%</view>
+        </view>
+        <view class="progress mt-8">
+          <view class="progress-fill" style="width: {{item.percent}}%;"></view>
+        </view>
+      </view>
+    </view>
+
+    <view class="section-head">
+      <view>
+        <view class="section-title">动作趋势</view>
+        <view class="section-sub">选择动作查看最近表现</view>
+      </view>
+    </view>
+
+    <view wx:if="{{exerciseOptions.length}}" class="card">
+      <picker mode="selector" range="{{exerciseOptions}}" range-key="name" value="{{selectedExerciseIndex}}" bindchange="onExerciseChange">
+        <view class="row between exercise-picker-row">
+          <view>
+            <view class="small text-2">{{selectedExerciseName}}</view>
+            <view class="tiny muted mt-4">点击切换动作</view>
+          </view>
+          <view class="chevron">⌄</view>
+        </view>
+      </picker>
+
+      <view wx:if="{{trend.length}}" class="trend-chart mt-24">
+        <view wx:for="{{trend}}" wx:key="label" class="trend-column">
+          <view class="trend-value tiny muted num">{{item.valueLabel}}</view>
+          <view class="trend-track">
+            <view class="trend-fill" style="height: {{item.height}}%;"></view>
+          </view>
+          <view class="trend-label tiny muted">{{item.label}}</view>
+        </view>
+      </view>
+      <view wx:else class="empty mt-16">
+        <view class="empty-title">还没有趋势数据</view>
+        <view class="empty-desc">完成这个动作后，这里会出现变化。</view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:else class="empty card mt-24">
+    <view class="empty-title">还没有足够的训练数据</view>
+    <view class="empty-desc">完成第一次训练后，这里会出现训练频率、训练量和 PR。</view>
+    <button class="btn btn-primary mt-20" bindtap="startWorkout">开始训练</button>
+  </view>
+</view>

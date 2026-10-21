@@ -1,0 +1,144 @@
+.stats-page {
+  padding-bottom: 28rpx;
+}
+
+.week-chart {
+  height: 240rpx;
+  display: flex;
+  align-items: flex-end;
+  gap: 18rpx;
+}
+
+.week-column {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8rpx;
+}
+
+.week-track {
+  width: 100%;
+  height: 160rpx;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  border-radius: 10rpx;
+  background: var(--surface-2);
+}
+
+.week-fill {
+  width: 100%;
+  min-height: 6rpx;
+  border-radius: 10rpx;
+  background: var(--primary);
+}
+
+.week-label {
+  font-size: 19rpx;
+}
+
+.pr-name {
+  font-size: 28rpx;
+  font-weight: 650;
+}
+
+.pr-value {
+  color: var(--primary);
+  font-size: 26rpx;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.muscle-stat + .muscle-stat {
+  margin-top: 22rpx;
+}
+
+.muscle-stat-name {
+  font-size: 26rpx;
+  color: var(--text-2);
+}
+
+.exercise-picker-row {
+  padding: 4rpx 0 2rpx;
+}
+
+.trend-chart {
+  height: 240rpx;
+  display: flex;
+  align-items: flex-end;
+  gap: 10rpx;
+}
+
+.trend-column {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6rpx;
+}
+
+.trend-value {
+  font-size: 17rpx;
+  white-space: nowrap;
+}
+
+.trend-track {
+  width: 100%;
+  height: 150rpx;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  border-radius: 8rpx;
+  background: var(--surface-2);
+}
+
+.trend-fill {
+  width: 100%;
+  min-height: 4rpx;
+  border-radius: 8rpx;
+  background: var(--primary);
+}
+
+.trend-label {
+  font-size: 17rpx;
+  white-space: nowrap;
+}
+
+.help-link {
+  color: var(--primary);
+  font-size: 23rpx;
+  font-weight: 600;
+}
+
+.stats-page .stat-value {
+  font-size: 32rpx;
+}
+
+.pr-row {
+  align-items: flex-start;
+  padding-left: 2rpx;
+  padding-right: 2rpx;
+}
+
+.pr-row:active {
+  opacity: 0.72;
+}
+
+.pr-value {
+  max-width: 210rpx;
+  margin-left: 12rpx;
+  text-align: right;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.trend-value,
+.week-value {
+  min-height: 28rpx;
+}

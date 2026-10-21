@@ -1,0 +1,45 @@
+<view class="page theme-{{theme}} picker-page">
+  <view class="picker-header">
+    <view class="search-box">
+      <view class="search-icon">⌕</view>
+      <input class="search-input" placeholder="搜索动作、肌群或器械" placeholder-class="input-placeholder" value="{{query}}" bindinput="onSearch" confirm-type="search" />
+    </view>
+
+    <scroll-view scroll-x class="muscle-scroll mt-16" show-scrollbar="{{false}}">
+      <view class="muscle-row">
+        <view wx:for="{{muscles}}" wx:key="*this" class="chip {{muscle === item ? 'active' : ''}}" data-muscle="{{item}}" bindtap="selectMuscle">{{item}}</view>
+      </view>
+    </scroll-view>
+
+    <view class="row between mt-16">
+      <view class="tiny muted">共 {{list.length}} 个动作</view>
+    </view>
+  </view>
+
+  <scroll-view scroll-y="{{true}}" class="exercise-scroll" show-scrollbar="{{false}}">
+    <view class="exercise-scroll-inner">
+      <view wx:if="{{list.length}}" class="exercise-list mt-16">
+        <view wx:for="{{list}}" wx:key="id" class="exercise-item" data-id="{{item.id}}" bindtap="selectExercise">
+          <view class="exercise-icon">{{item.initial}}</view>
+          <view class="grow">
+            <view class="row gap-8 exercise-name-row">
+              <view class="exercise-name">{{item.name}}</view>
+              <view wx:if="{{item.pinned}}" class="badge badge-primary">置顶</view>
+              <view wx:if="{{item.recentIndex < 999}}" class="badge">最近</view>
+            </view>
+            <view class="muted tiny mt-8">{{item.muscle}} · {{item.equipment}}</view>
+          </view>
+          <view class="item-actions">
+            <view class="pin-btn {{item.pinned ? 'active' : ''}}" data-id="{{item.id}}" catchtap="togglePin">{{item.pinned ? '已置顶' : '置顶'}}</view>
+            <view class="add-mark">+</view>
+          </view>
+        </view>
+      </view>
+
+      <view wx:else class="empty mt-24">
+        <view class="empty-title">没有找到动作</view>
+        <view class="empty-desc">换个关键词试试。</view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

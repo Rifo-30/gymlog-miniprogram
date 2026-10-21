@@ -1,0 +1,192 @@
+const MUSCLES = ['胸', '背', '腿', '肩', '手臂', '核心', '有氧'];
+const EQUIPMENT = ['杠铃', '哑铃', '器械', '绳索', '自重', '其他'];
+const EXERCISES = [
+  { id: 'bench_press', name: '杠铃卧推', muscle: '胸', equipment: '杠铃', type: 'weight_reps', aliases: ['卧推', '平板卧推'] },
+  { id: 'incline_bench_press', name: '上斜杠铃卧推', muscle: '胸', equipment: '杠铃', type: 'weight_reps', aliases: ['上斜卧推'] },
+  { id: 'decline_bench_press', name: '下斜杠铃卧推', muscle: '胸', equipment: '杠铃', type: 'weight_reps', aliases: ['下斜卧推'] },
+  { id: 'dumbbell_bench_press', name: '哑铃卧推', muscle: '胸', equipment: '哑铃', type: 'weight_reps', aliases: ['平板哑铃卧推'] },
+  { id: 'incline_dumbbell_press', name: '上斜哑铃卧推', muscle: '胸', equipment: '哑铃', type: 'weight_reps', aliases: ['上斜哑铃'] },
+  { id: 'decline_dumbbell_press', name: '下斜哑铃卧推', muscle: '胸', equipment: '哑铃', type: 'weight_reps', aliases: ['下斜哑铃'] },
+  { id: 'seated_chest_press', name: '坐姿推胸', muscle: '胸', equipment: '器械', type: 'weight_reps', aliases: ['推胸机', '坐姿推胸机', '推胸'] },
+  { id: 'incline_chest_press_machine', name: '上斜推胸机', muscle: '胸', equipment: '器械', type: 'weight_reps', aliases: ['上斜器械推胸'] },
+  { id: 'smith_bench_press', name: '史密斯卧推', muscle: '胸', equipment: '器械', type: 'weight_reps', aliases: ['史密斯平板卧推'] },
+  { id: 'pec_deck_fly', name: '蝴蝶机夹胸', muscle: '胸', equipment: '器械', type: 'weight_reps', aliases: ['蝴蝶机', '夹胸', '蝴蝶机夹胸'] },
+  { id: 'cable_fly', name: '绳索夹胸', muscle: '胸', equipment: '绳索', type: 'weight_reps', aliases: ['夹胸', '飞鸟', '站姿绳索夹胸'] },
+  { id: 'low_cable_fly', name: '低位绳索夹胸', muscle: '胸', equipment: '绳索', type: 'weight_reps', aliases: ['低位夹胸', '下斜绳索夹胸'] },
+  { id: 'high_cable_fly', name: '高位绳索夹胸', muscle: '胸', equipment: '绳索', type: 'weight_reps', aliases: ['高位夹胸', '上斜绳索夹胸'] },
+  { id: 'dumbbell_fly', name: '哑铃飞鸟', muscle: '胸', equipment: '哑铃', type: 'weight_reps', aliases: ['平板飞鸟'] },
+  { id: 'incline_dumbbell_fly', name: '上斜哑铃飞鸟', muscle: '胸', equipment: '哑铃', type: 'weight_reps', aliases: ['上斜飞鸟'] },
+  { id: 'floor_press', name: '哑铃地板卧推', muscle: '胸', equipment: '哑铃', type: 'weight_reps', aliases: ['地板卧推'] },
+  { id: 'push_up', name: '俯卧撑', muscle: '胸', equipment: '自重', type: 'reps', aliases: ['pushup', '标准俯卧撑'] },
+  { id: 'dips', name: '双杠臂屈伸', muscle: '胸', equipment: '自重', type: 'reps', aliases: ['臂屈伸', '双杠'] },
+
+  { id: 'deadlift', name: '杠铃硬拉', muscle: '背', equipment: '杠铃', type: 'weight_reps', aliases: ['硬拉', '传统硬拉'] },
+  { id: 'rack_pull', name: '架上硬拉', muscle: '背', equipment: '杠铃', type: 'weight_reps', aliases: ['架拉'] },
+  { id: 'pull_up', name: '引体向上', muscle: '背', equipment: '自重', type: 'reps', aliases: ['引体', '正手引体'] },
+  { id: 'chin_up', name: '反手引体向上', muscle: '背', equipment: '自重', type: 'reps', aliases: ['反手引体', '窄握引体'] },
+  { id: 'lat_pulldown', name: '高位下拉', muscle: '背', equipment: '器械', type: 'weight_reps', aliases: ['下拉', '宽握下拉'] },
+  { id: 'close_grip_lat_pulldown', name: '窄握高位下拉', muscle: '背', equipment: '器械', type: 'weight_reps', aliases: ['窄握下拉'] },
+  { id: 'reverse_grip_lat_pulldown', name: '反握高位下拉', muscle: '背', equipment: '器械', type: 'weight_reps', aliases: ['反手下拉'] },
+  { id: 'single_arm_lat_pulldown', name: '单臂高位下拉', muscle: '背', equipment: '绳索', type: 'weight_reps', aliases: ['单臂下拉'] },
+  { id: 'barbell_row', name: '杠铃划船', muscle: '背', equipment: '杠铃', type: 'weight_reps', aliases: ['划船', '俯身划船'] },
+  { id: 'one_arm_dumbbell_row', name: '单臂哑铃划船', muscle: '背', equipment: '哑铃', type: 'weight_reps', aliases: ['哑铃划船', '单臂划船'] },
+  { id: 'bent_over_dumbbell_row', name: '俯身哑铃划船', muscle: '背', equipment: '哑铃', type: 'weight_reps', aliases: ['双臂哑铃划船'] },
+  { id: 'seated_cable_row', name: '坐姿绳索划船', muscle: '背', equipment: '绳索', type: 'weight_reps', aliases: ['坐姿划船', '绳索划船'] },
+  { id: 't_bar_row', name: 'T杠划船', muscle: '背', equipment: '器械', type: 'weight_reps', aliases: ['T杆划船', 'T把划船'] },
+  { id: 'chest_supported_row', name: '胸支撑划船', muscle: '背', equipment: '器械', type: 'weight_reps', aliases: ['胸靠划船', '支撑划船'] },
+  { id: 'machine_row', name: '器械划船', muscle: '背', equipment: '器械', type: 'weight_reps', aliases: ['坐姿器械划船'] },
+  { id: 'straight_arm_pulldown', name: '直臂下压', muscle: '背', equipment: '绳索', type: 'weight_reps', aliases: ['直臂下拉'] },
+  { id: 'face_pull', name: '面拉', muscle: '背', equipment: '绳索', type: 'weight_reps', aliases: ['face pull', '绳索面拉'] },
+  { id: 'pullover', name: '哑铃仰卧上拉', muscle: '背', equipment: '哑铃', type: 'weight_reps', aliases: ['上拉', '哑铃上拉'] },
+  { id: 'inverted_row', name: '反向划船', muscle: '背', equipment: '自重', type: 'reps', aliases: ['斜身划船', '自重划船'] },
+  { id: 'hyperextension', name: '山羊挺身', muscle: '背', equipment: '器械', type: 'reps', aliases: ['背屈伸', '山羊背伸'] },
+  { id: 'barbell_shrug', name: '杠铃耸肩', muscle: '背', equipment: '杠铃', type: 'weight_reps', aliases: ['耸肩'] },
+  { id: 'dumbbell_shrug', name: '哑铃耸肩', muscle: '背', equipment: '哑铃', type: 'weight_reps', aliases: ['哑铃耸肩'] },
+
+  { id: 'back_squat', name: '杠铃深蹲', muscle: '腿', equipment: '杠铃', type: 'weight_reps', aliases: ['深蹲', '后蹲'] },
+  { id: 'front_squat', name: '前蹲', muscle: '腿', equipment: '杠铃', type: 'weight_reps', aliases: ['前深蹲'] },
+  { id: 'goblet_squat', name: '高脚杯深蹲', muscle: '腿', equipment: '哑铃', type: 'weight_reps', aliases: ['酒杯深蹲'] },
+  { id: 'hack_squat', name: '哈克深蹲', muscle: '腿', equipment: '器械', type: 'weight_reps', aliases: ['哈克机深蹲'] },
+  { id: 'smith_squat', name: '史密斯深蹲', muscle: '腿', equipment: '器械', type: 'weight_reps', aliases: ['史密斯机深蹲'] },
+  { id: 'leg_press', name: '腿举', muscle: '腿', equipment: '器械', type: 'weight_reps', aliases: ['倒蹬', '蹬腿'] },
+  { id: 'bulgarian_split_squat', name: '保加利亚分腿蹲', muscle: '腿', equipment: '哑铃', type: 'weight_reps', aliases: ['保加利亚蹲', '分腿蹲'] },
+  { id: 'walking_lunge', name: '行走箭步蹲', muscle: '腿', equipment: '哑铃', type: 'weight_reps', aliases: ['箭步蹲', '弓步蹲'] },
+  { id: 'reverse_lunge', name: '反向箭步蹲', muscle: '腿', equipment: '哑铃', type: 'weight_reps', aliases: ['后撤步箭步蹲'] },
+  { id: 'step_up', name: '箱式登阶', muscle: '腿', equipment: '哑铃', type: 'weight_reps', aliases: ['登阶', '箱上踏步'] },
+  { id: 'romanian_deadlift', name: '罗马尼亚硬拉', muscle: '腿', equipment: '杠铃', type: 'weight_reps', aliases: ['RDL', '直腿硬拉'] },
+  { id: 'single_leg_romanian_deadlift', name: '单腿罗马尼亚硬拉', muscle: '腿', equipment: '哑铃', type: 'weight_reps', aliases: ['单腿RDL'] },
+  { id: 'sumo_deadlift', name: '相扑硬拉', muscle: '腿', equipment: '杠铃', type: 'weight_reps', aliases: ['宽站距硬拉'] },
+  { id: 'good_morning', name: '早安式', muscle: '腿', equipment: '杠铃', type: 'weight_reps', aliases: ['早安式屈体', '杠铃早安'] },
+  { id: 'leg_curl', name: '腿弯举', muscle: '腿', equipment: '器械', type: 'weight_reps', aliases: ['俯卧腿弯举', '坐姿腿弯举', '腘绳肌弯举'] },
+  { id: 'lying_leg_curl', name: '俯卧腿弯举', muscle: '腿', equipment: '器械', type: 'weight_reps', aliases: ['趴姿腿弯举'] },
+  { id: 'leg_extension', name: '腿屈伸', muscle: '腿', equipment: '器械', type: 'weight_reps', aliases: ['腿伸展', '坐姿腿屈伸'] },
+  { id: 'hip_abduction', name: '坐姿髋外展', muscle: '腿', equipment: '器械', type: 'weight_reps', aliases: ['髋外展', '臀中肌', '外展机'] },
+  { id: 'hip_adduction', name: '坐姿髋内收', muscle: '腿', equipment: '器械', type: 'weight_reps', aliases: ['髋内收', '内收机'] },
+  { id: 'cable_glute_kickback', name: '绳索后踢腿', muscle: '腿', equipment: '绳索', type: 'weight_reps', aliases: ['后踢腿', '臀踢'] },
+  { id: 'hip_thrust', name: '臀推', muscle: '腿', equipment: '杠铃', type: 'weight_reps', aliases: ['杠铃臀推', '负重臀桥'] },
+  { id: 'glute_bridge', name: '臀桥', muscle: '腿', equipment: '自重', type: 'reps', aliases: ['自重臀桥'] },
+  { id: 'standing_calf_raise', name: '站姿提踵', muscle: '腿', equipment: '器械', type: 'weight_reps', aliases: ['提踵', '小腿'] },
+  { id: 'seated_calf_raise', name: '坐姿提踵', muscle: '腿', equipment: '器械', type: 'weight_reps', aliases: ['坐姿小腿'] },
+  { id: 'donkey_calf_raise', name: '驴式提踵', muscle: '腿', equipment: '器械', type: 'weight_reps', aliases: ['驴式小腿'] },
+  { id: 'nordic_curl', name: '北欧腿弯举', muscle: '腿', equipment: '自重', type: 'reps', aliases: ['北欧弯举', '腘绳肌弯举'] },
+  { id: 'sissy_squat', name: '西斯深蹲', muscle: '腿', equipment: '自重', type: 'reps', aliases: ['Sissy Squat'] },
+  { id: 'tibialis_raise', name: '胫骨前肌提踵', muscle: '腿', equipment: '自重', type: 'reps', aliases: ['胫骨提踵', '前胫肌'] },
+  { id: 'cable_pull_through', name: '绳索拉臀', muscle: '腿', equipment: '绳索', type: 'weight_reps', aliases: ['绳索髋伸', 'Pull Through'] },
+
+  { id: 'overhead_press', name: '杠铃推举', muscle: '肩', equipment: '杠铃', type: 'weight_reps', aliases: ['肩推', '推举', '站姿推举'] },
+  { id: 'seated_barbell_press', name: '坐姿杠铃推举', muscle: '肩', equipment: '杠铃', type: 'weight_reps', aliases: ['坐姿肩推'] },
+  { id: 'dumbbell_shoulder_press', name: '哑铃肩推', muscle: '肩', equipment: '哑铃', type: 'weight_reps', aliases: ['哑铃推举', '坐姿哑铃肩推'] },
+  { id: 'arnold_press', name: '阿诺德推举', muscle: '肩', equipment: '哑铃', type: 'weight_reps', aliases: ['阿诺德推肩'] },
+  { id: 'machine_shoulder_press', name: '器械肩推', muscle: '肩', equipment: '器械', type: 'weight_reps', aliases: ['坐姿器械肩推'] },
+  { id: 'lateral_raise', name: '哑铃侧平举', muscle: '肩', equipment: '哑铃', type: 'weight_reps', aliases: ['侧平举', '侧飞鸟'] },
+  { id: 'cable_lateral_raise', name: '绳索侧平举', muscle: '肩', equipment: '绳索', type: 'weight_reps', aliases: ['单臂绳索侧平举'] },
+  { id: 'machine_lateral_raise', name: '器械侧平举', muscle: '肩', equipment: '器械', type: 'weight_reps', aliases: ['坐姿侧平举'] },
+  { id: 'front_raise', name: '哑铃前平举', muscle: '肩', equipment: '哑铃', type: 'weight_reps', aliases: ['前平举'] },
+  { id: 'cable_front_raise', name: '绳索前平举', muscle: '肩', equipment: '绳索', type: 'weight_reps', aliases: ['绳索前举'] },
+  { id: 'rear_delt_fly', name: '反向飞鸟', muscle: '肩', equipment: '哑铃', type: 'weight_reps', aliases: ['后束飞鸟', '俯身飞鸟'] },
+  { id: 'reverse_pec_deck', name: '反向蝴蝶机', muscle: '肩', equipment: '器械', type: 'weight_reps', aliases: ['反向飞鸟机', '后束蝴蝶机'] },
+  { id: 'upright_row', name: '直立划船', muscle: '肩', equipment: '杠铃', type: 'weight_reps', aliases: ['提拉', '直立提拉'] },
+  { id: 'landmine_press', name: '地雷管推举', muscle: '肩', equipment: '杠铃', type: 'weight_reps', aliases: ['地雷管推肩', '单臂地雷管推举'] },
+  { id: 'push_press', name: '借力推举', muscle: '肩', equipment: '杠铃', type: 'weight_reps', aliases: ['Push Press'] },
+  { id: 'handstand_push_up', name: '倒立撑', muscle: '肩', equipment: '自重', type: 'reps', aliases: ['Handstand Push Up'] },
+
+  { id: 'barbell_curl', name: '杠铃弯举', muscle: '手臂', equipment: '杠铃', type: 'weight_reps', aliases: ['二头弯举', '直杆弯举'] },
+  { id: 'dumbbell_curl', name: '哑铃弯举', muscle: '手臂', equipment: '哑铃', type: 'weight_reps', aliases: ['二头', '交替弯举'] },
+  { id: 'hammer_curl', name: '锤式弯举', muscle: '手臂', equipment: '哑铃', type: 'weight_reps', aliases: ['锤式', '锤式哑铃弯举'] },
+  { id: 'preacher_curl', name: '牧师凳弯举', muscle: '手臂', equipment: '杠铃', type: 'weight_reps', aliases: ['牧师椅弯举', 'EZ杠弯举'] },
+  { id: 'incline_dumbbell_curl', name: '上斜哑铃弯举', muscle: '手臂', equipment: '哑铃', type: 'weight_reps', aliases: ['上斜弯举'] },
+  { id: 'concentration_curl', name: '集中弯举', muscle: '手臂', equipment: '哑铃', type: 'weight_reps', aliases: ['集中哑铃弯举'] },
+  { id: 'cable_curl', name: '绳索弯举', muscle: '手臂', equipment: '绳索', type: 'weight_reps', aliases: ['绳索二头弯举'] },
+  { id: 'reverse_curl', name: '反握弯举', muscle: '手臂', equipment: '杠铃', type: 'weight_reps', aliases: ['反手弯举', '前臂弯举'] },
+  { id: 'spider_curl', name: '蜘蛛弯举', muscle: '手臂', equipment: '哑铃', type: 'weight_reps', aliases: ['蜘蛛哑铃弯举'] },
+  { id: 'triceps_pushdown', name: '绳索下压', muscle: '手臂', equipment: '绳索', type: 'weight_reps', aliases: ['三头下压', '绳索三头下压'] },
+  { id: 'reverse_grip_triceps_pushdown', name: '反握下压', muscle: '手臂', equipment: '绳索', type: 'weight_reps', aliases: ['反手三头下压'] },
+  { id: 'overhead_triceps_extension', name: '过头三头伸展', muscle: '手臂', equipment: '绳索', type: 'weight_reps', aliases: ['三头伸展', '过头臂屈伸'] },
+  { id: 'overhead_cable_triceps_extension', name: '过头绳索三头伸展', muscle: '手臂', equipment: '绳索', type: 'weight_reps', aliases: ['绳索过头臂屈伸'] },
+  { id: 'dumbbell_triceps_extension', name: '哑铃颈后臂屈伸', muscle: '手臂', equipment: '哑铃', type: 'weight_reps', aliases: ['哑铃过头臂屈伸'] },
+  { id: 'skull_crusher', name: '仰卧三头臂屈伸', muscle: '手臂', equipment: '杠铃', type: 'weight_reps', aliases: ['碎颅者', '仰卧臂屈伸'] },
+  { id: 'close_grip_bench_press', name: '窄距卧推', muscle: '手臂', equipment: '杠铃', type: 'weight_reps', aliases: ['窄推', '窄握卧推'] },
+  { id: 'bench_dip', name: '凳上臂屈伸', muscle: '手臂', equipment: '自重', type: 'reps', aliases: ['凳上反屈伸', '三头凳撑'] },
+  { id: 'kickback', name: '哑铃臂后伸', muscle: '手臂', equipment: '哑铃', type: 'weight_reps', aliases: ['三头后踢', '哑铃踢腿'] },
+  { id: 'wrist_curl', name: '腕弯举', muscle: '手臂', equipment: '哑铃', type: 'weight_reps', aliases: ['手腕弯举', '前臂弯举'] },
+  { id: 'reverse_wrist_curl', name: '反向腕弯举', muscle: '手臂', equipment: '哑铃', type: 'weight_reps', aliases: ['反握腕弯举'] },
+
+  { id: 'plank', name: '平板支撑', muscle: '核心', equipment: '自重', type: 'time', aliases: ['平板', 'Plank'] },
+  { id: 'side_plank', name: '侧平板支撑', muscle: '核心', equipment: '自重', type: 'time', aliases: ['侧桥', 'Side Plank'] },
+  { id: 'crunch', name: '卷腹', muscle: '核心', equipment: '自重', type: 'reps', aliases: ['腹肌', '仰卧卷腹'] },
+  { id: 'bicycle_crunch', name: '自行车卷腹', muscle: '核心', equipment: '自重', type: 'reps', aliases: ['交替卷腹'] },
+  { id: 'reverse_crunch', name: '反向卷腹', muscle: '核心', equipment: '自重', type: 'reps', aliases: ['抬臀卷腹'] },
+  { id: 'leg_raise', name: '仰卧举腿', muscle: '核心', equipment: '自重', type: 'reps', aliases: ['平躺举腿'] },
+  { id: 'high_knee_crunch', name: '高抬腿卷腹', muscle: '核心', equipment: '自重', type: 'reps', aliases: ['高抬腿', '抬腿卷腹', '高位卷腹'] },
+  { id: 'hanging_leg_raise', name: '悬垂举腿', muscle: '核心', equipment: '自重', type: 'reps', aliases: ['举腿', '悬垂抬腿'] },
+  { id: 'dead_bug', name: '死虫式', muscle: '核心', equipment: '自重', type: 'reps', aliases: ['死虫', 'Dead Bug'] },
+  { id: 'mountain_climber', name: '登山跑', muscle: '核心', equipment: '自重', type: 'time', aliases: ['爬山者', 'Mountain Climber'] },
+  { id: 'hollow_body_hold', name: '空心支撑', muscle: '核心', equipment: '自重', type: 'time', aliases: ['空心支撑', 'Hollow Hold'] },
+  { id: 'ab_wheel', name: '健腹轮', muscle: '核心', equipment: '其他', type: 'reps', aliases: ['腹肌轮', '健腹轮滚动'] },
+  { id: 'cable_crunch', name: '绳索卷腹', muscle: '核心', equipment: '绳索', type: 'weight_reps', aliases: ['绳索腹肌', '跪姿绳索卷腹'] },
+  { id: 'russian_twist', name: '俄罗斯转体', muscle: '核心', equipment: '自重', type: 'reps', aliases: ['转体', '俄罗斯旋转'] },
+  { id: 'side_bend', name: '哑铃侧屈', muscle: '核心', equipment: '哑铃', type: 'weight_reps', aliases: ['侧弯', '负重侧屈'] },
+  { id: 'woodchopper', name: '绳索斜劈', muscle: '核心', equipment: '绳索', type: 'weight_reps', aliases: ['斜劈', 'Woodchopper'] },
+  { id: 'pallof_press', name: '帕洛夫推', muscle: '核心', equipment: '绳索', type: 'weight_reps', aliases: ['抗旋转推', 'Pallof Press'] },
+  { id: 'superman', name: '超人式', muscle: '核心', equipment: '自重', type: 'reps', aliases: ['超人', '俯卧两头起'] },
+
+  { id: 'treadmill', name: '跑步机跑步', muscle: '有氧', equipment: '器械', type: 'cardio', cardioType: 'treadmill_run', aliases: ['跑步机', '跑步', '有氧', '室内跑步'] },
+  { id: 'treadmill_incline_walk', name: '跑步机爬坡', muscle: '有氧', equipment: '器械', type: 'cardio', cardioType: 'treadmill_incline', aliases: ['坡度走', '爬坡走', '爬坡', '跑步机坡度走'] },
+  { id: 'outdoor_run', name: '户外跑步', muscle: '有氧', equipment: '其他', type: 'time', aliases: ['路跑', '室外跑步'] },
+  { id: 'outdoor_walk', name: '户外快走', muscle: '有氧', equipment: '其他', type: 'time', aliases: ['快走', '室外快走'] },
+  { id: 'cycling', name: '单车', muscle: '有氧', equipment: '器械', type: 'cardio', cardioType: 'cycling', aliases: ['动感单车', '骑车', '室内骑行'] },
+  { id: 'outdoor_cycling', name: '户外骑行', muscle: '有氧', equipment: '其他', type: 'time', aliases: ['自行车', '骑行'] },
+  { id: 'rowing_machine', name: '划船机', muscle: '有氧', equipment: '器械', type: 'cardio', cardioType: 'rowing', aliases: ['划船有氧', '室内划船'] },
+  { id: 'elliptical', name: '椭圆机', muscle: '有氧', equipment: '器械', type: 'time', aliases: ['椭圆仪'] },
+  { id: 'stair_climber', name: '爬楼机', muscle: '有氧', equipment: '器械', type: 'time', aliases: ['登楼机', '楼梯机'] },
+  { id: 'swimming', name: '游泳', muscle: '有氧', equipment: '其他', type: 'cardio', cardioType: 'swimming', aliases: ['泳池', '自由泳'] },
+  { id: 'jump_rope', name: '跳绳', muscle: '有氧', equipment: '其他', type: 'cardio', cardioType: 'jump_rope', aliases: ['跳绳'] },
+  { id: 'burpee', name: '波比跳', muscle: '有氧', equipment: '自重', type: 'reps', aliases: ['Burpee', '波比'] },
+  { id: 'battle_rope', name: '战绳', muscle: '有氧', equipment: '其他', type: 'time', aliases: ['Battle Rope', '甩绳'] },
+  { id: 'sled_push', name: '雪橇推', muscle: '有氧', equipment: '其他', type: 'time', aliases: ['推雪橇', 'Sled Push'] },
+  { id: 'jumping_jack', name: '开合跳', muscle: '有氧', equipment: '自重', type: 'reps', aliases: ['Jumping Jack', '开合跳'] },
+];
+
+function normalizeCustom(exercise) {
+  return {
+    id: exercise.id,
+    name: exercise.name,
+    muscle: exercise.muscle || '其他',
+    equipment: exercise.equipment || '其他',
+    type: exercise.type || 'weight_reps',
+    aliases: exercise.aliases || [],
+    custom: true
+  };
+}
+
+function getAll(customExercises) {
+  const custom = (customExercises || []).map(normalizeCustom);
+  return EXERCISES.map((item) => Object.assign({ custom: false }, item)).concat(custom);
+}
+
+function findById(id, customExercises) {
+  return getAll(customExercises).find((item) => item.id === id) || null;
+}
+
+function search(list, query, muscle) {
+  const keyword = String(query || '').trim().toLowerCase();
+  return (list || []).filter((item) => {
+    const inMuscle = !muscle || muscle === '全部' || item.muscle === muscle;
+    if (!inMuscle) return false;
+    if (!keyword) return true;
+    const haystack = [item.name, item.muscle, item.equipment]
+      .concat(item.aliases || [])
+      .join(' ')
+      .toLowerCase();
+    return haystack.indexOf(keyword) >= 0;
+  });
+}
+
+module.exports = {
+  MUSCLES,
+  EQUIPMENT,
+  EXERCISES,
+  getAll,
+  findById,
+  search
+};

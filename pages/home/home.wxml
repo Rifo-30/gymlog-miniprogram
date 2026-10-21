@@ -1,0 +1,94 @@
+<view class="page with-tabbar theme-{{theme}} home-page">
+  <view class="row between page-top">
+    <view>
+      <view class="tiny muted">{{todayLabel}}</view>
+      <view class="h1 mt-8">{{greeting}}</view>
+    </view>
+    <view class="icon-btn" bindtap="goSettings">⚙</view>
+  </view>
+
+  <view wx:if="{{activeWorkout}}" class="active-card card card-accent mt-24" bindtap="continueActive">
+    <view class="row between">
+      <view class="row gap-12">
+        <view class="live-dot"></view>
+        <view class="active-label">正在训练</view>
+      </view>
+      <view class="tiny muted num">{{activeWorkout.elapsedLabel}}</view>
+    </view>
+    <view class="row between mt-16">
+      <view>
+        <view class="h2">{{activeWorkout.name}}</view>
+        <view class="muted small mt-8">{{activeWorkout.exerciseCount}} 个动作 · {{activeWorkout.sets}} 组<text wx:if="{{activeWorkout.cardioCount}}"> · {{activeWorkout.cardioCount}} 项有氧</text></view>
+      </view>
+      <view class="active-arrow">继续 →</view>
+    </view>
+  </view>
+
+  <view class="hero-card card mt-24">
+    <view class="row between">
+      <view class="hero-kicker">TODAY</view>
+      <view class="badge badge-primary">{{weekly.count}} / {{weekly.goal}} 次</view>
+    </view>
+    <view class="h1 mt-16">今天练什么？</view>
+    <view class="muted small mt-8">开始一次训练，剩下的交给你和杠铃。</view>
+    <button class="btn btn-primary btn-block mt-24" bindtap="startWorkout">
+      {{activeWorkout ? '继续当前训练' : '开始训练'}}
+    </button>
+    <view class="quick-row mt-16">
+      <view class="quick-item" bindtap="repeatLast">复制上次</view>
+      <view class="quick-item" bindtap="goTraining">动作库</view>
+      <view class="quick-item" bindtap="goStats">看趋势</view>
+    </view>
+  </view>
+
+  <view class="card weekly-card mt-24">
+    <view class="row between">
+      <view>
+        <view class="section-title">本周训练</view>
+        <view class="section-sub">{{weekly.count}} 次完成 · {{weekly.sets}} 组</view>
+      </view>
+      <view class="weekly-volume num">{{weeklyVolumeLabel}}</view>
+    </view>
+    <view class="progress mt-16">
+      <view class="progress-fill" style="width: {{weekly.percent}}%;"></view>
+    </view>
+    <view class="row between mt-12">
+      <view class="tiny muted">目标 {{weekly.goal}} 次</view>
+      <view class="tiny {{weekly.remaining === 0 ? 'text-success' : 'muted'}}">
+        {{weekly.remaining === 0 ? '本周目标已完成' : '还差 ' + weekly.remaining + ' 次'}}
+      </view>
+    </view>
+  </view>
+
+  <view class="section-head">
+    <view>
+      <view class="section-title">最近训练</view>
+      <view class="section-sub">共 {{totalWorkouts}} 次记录</view>
+    </view>
+    <view class="tiny muted" bindtap="goHistory">查看全部 →</view>
+  </view>
+
+  <view wx:if="{{recentWorkouts.length}}" class="card card-flat">
+    <view wx:for="{{recentWorkouts}}" wx:key="id" class="list-item recent-item" bindtap="openWorkout" data-id="{{item.id}}">
+      <view class="row between">
+        <view class="grow">
+          <view class="row gap-8">
+            <view class="recent-name">{{item.name}}</view>
+            <view class="badge">{{item.badgeLabel}}</view>
+          </view>
+          <view class="muted small mt-8">{{item.dateLabel}} · {{item.durationLabel}} · {{item.muscleLine}}</view>
+        </view>
+        <view class="recent-volume num">{{item.metricLabel}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:else class="empty mt-24">
+    <view class="empty-title">还没有训练记录</view>
+    <view class="empty-desc">点击上方“开始训练”，记录你的第一组动作。</view>
+  </view>
+
+  <!-- <view class="home-foot tiny muted center-text mt-32">
+    训练数据默认保存在本机 · 可在“我的”中导出
+  </view> -->
+</view>

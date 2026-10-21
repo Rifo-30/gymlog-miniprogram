@@ -1,0 +1,119 @@
+.history-page {
+  padding-bottom: 28rpx;
+}
+
+.calendar {
+  padding: 24rpx 18rpx 20rpx;
+}
+
+.calendar-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6rpx 18rpx;
+}
+
+.calendar-arrow {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18rpx;
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-size: 36rpx;
+}
+
+.month-label {
+  font-size: 30rpx;
+  font-weight: 700;
+}
+
+.weekday-row,
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.weekday {
+  padding: 8rpx 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 20rpx;
+}
+
+.calendar-cell {
+  height: 82rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20rpx;
+  color: var(--text-2);
+}
+
+.calendar-cell.out-month {
+  opacity: 0.22;
+}
+
+.calendar-cell.today .calendar-day {
+  color: var(--primary);
+  font-weight: 750;
+}
+
+.calendar-cell.selected {
+  background: var(--primary-soft);
+}
+
+.calendar-cell.selected .calendar-day {
+  color: var(--primary);
+}
+
+.calendar-day {
+  font-size: 25rpx;
+}
+
+.calendar-dot {
+  width: 8rpx;
+  height: 8rpx;
+  margin-top: 5rpx;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.calendar-dot.show {
+  background: var(--primary);
+}
+
+.filter-scroll {
+  width: 100%;
+  white-space: nowrap;
+  padding-bottom: 4rpx;
+}
+
+.filter-row {
+  display: inline-flex;
+  gap: 12rpx;
+}
+
+.history-name {
+  font-size: 30rpx;
+  font-weight: 650;
+}
+
+.history-volume {
+  max-width: 230rpx;
+  color: var(--text-2);
+  font-size: 23rpx;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.history-item:active {
+  opacity: 0.72;
+}
+
+.mt-4 {
+  margin-top: 4rpx;
+}

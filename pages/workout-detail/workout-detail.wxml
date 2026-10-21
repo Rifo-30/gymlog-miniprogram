@@ -1,0 +1,115 @@
+<view class="page theme-{{theme}} detail-page">
+  <view wx:if="{{workout}}">
+    <view wx:if="{{isSummary}}" class="summary-hero">
+      <view class="summary-check">✓</view>
+      <view class="summary-kicker">WORKOUT COMPLETE</view>
+      <view class="h1 mt-12">训练完成</view>
+      <view class="muted small mt-8">{{workout.name}}</view>
+    </view>
+
+    <view wx:else class="detail-hero">
+      <view class="tiny muted">{{dateLabel}}</view>
+      <view class="h1 mt-8">{{workout.name}}</view>
+    </view>
+
+    <view class="stat-grid mt-24">
+      <view class="stat-card">
+        <view class="stat-value num">{{stats.exerciseCount}}</view>
+        <view class="stat-label">动作</view>
+      </view>
+      <view class="stat-card">
+        <view class="stat-value num">{{stats.cardioCount ? stats.cardioLabel : stats.sets}}</view>
+        <view class="stat-label">{{stats.cardioCount ? '有氧时长' : '完成组数'}}</view>
+      </view>
+      <view class="stat-card">
+        <view class="stat-value num">{{stats.durationLabel}}</view>
+        <view class="stat-label">训练时长</view>
+      </view>
+    </view>
+
+    <view wx:if="{{stats.sets}}" class="card volume-card mt-16">
+      <view class="row between">
+        <view>
+          <view class="section-title">训练总量</view>
+          <view class="section-sub">重量 × 次数（仅力量动作）</view>
+        </view>
+        <view class="volume-value num">{{stats.volumeLabel}}</view>
+      </view>
+    </view>
+
+    <view wx:if="{{stats.cardioCount}}" class="card cardio-overview mt-16">
+      <view class="row between">
+        <view>
+          <view class="section-title">有氧记录</view>
+          <view class="section-sub">{{stats.cardioCount}} 项 · 总时长 {{stats.cardioLabel}}</view>
+        </view>
+        <view class="badge badge-primary">有氧</view>
+      </view>
+    </view>
+
+    <view wx:if="{{prs.length}}" class="card pr-card mt-24">
+      <view class="row between">
+        <view class="section-title">本次新纪录</view>
+        <view class="help-link" bindtap="showPRHelp">PR 是什么？</view>
+      </view>
+      <view wx:for="{{prs}}" wx:key="exerciseId" class="pr-item">
+        <view class="row between">
+          <view>
+            <view class="pr-name">{{item.exerciseName}}</view>
+            <view class="muted tiny mt-8">{{item.label}} · {{item.detail}}</view>
+          </view>
+          <view class="pr-value num">{{item.displayValue}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="section-head">
+      <view>
+        <view class="section-title">动作明细</view>
+        <view class="section-sub">{{dateLabel}}</view>
+      </view>
+      <view class="history-link" bindtap="openExerciseHistoryMenu">选择动作查看历史 ›</view>
+    </view>
+
+    <view class="card card-flat">
+      <view wx:for="{{exercises}}" wx:key="id" wx:for-item="exercise" class="detail-exercise" data-id="{{exercise.exerciseId}}" bindtap="openExercise">
+        <view class="row between">
+          <view>
+            <view class="detail-ex-name">{{exercise.name}}</view>
+            <view class="muted tiny mt-8">{{exercise.muscle}} · {{exercise.equipment}} · {{exercise.isCardio ? '有氧记录' : exercise.setCount + ' 组'}}</view>
+          </view>
+          <view class="chevron">›</view>
+        </view>
+        <view wx:if="{{exercise.isCardio}}" class="cardio-detail-summary mt-12">
+          {{exercise.cardio.summary}}
+        </view>
+        <view wx:else class="set-lines mt-12">
+          <view wx:for="{{exercise.sets}}" wx:key="id" wx:for-item="set" class="set-line">
+            <view class="set-line-index num">{{set.index}}</view>
+            <view class="set-line-value num">{{set.line}}</view>
+          </view>
+        </view>
+        <view wx:if="{{exercise.note}}" class="detail-note mt-12">{{exercise.note}}</view>
+      </view>
+    </view>
+
+    <view wx:if="{{workout.note}}" class="card session-note mt-24">
+      <view class="section-title">训练备注</view>
+      <view class="text-2 small mt-12">{{workout.note}}</view>
+    </view>
+
+    <view class="action-stack mt-24">
+      <block wx:if="{{isSummary}}">
+        <button class="btn btn-primary btn-block" bindtap="done">完成</button>
+        <button class="btn btn-ghost btn-block mt-12" bindtap="editWorkout">编辑这次记录</button>
+      </block>
+      <block wx:else>
+        <button class="btn btn-primary btn-block" bindtap="editWorkout">编辑记录</button>
+        <view class="row gap-12 mt-12">
+          <button class="btn btn-ghost grow" bindtap="copyWorkout">复制到今天</button>
+          <button class="btn btn-danger grow" bindtap="deleteWorkout">删除</button>
+        </view>
+      </block>
+    </view>
+  </view>
+</view>
