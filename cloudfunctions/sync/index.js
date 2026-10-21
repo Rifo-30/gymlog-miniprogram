@@ -185,6 +185,8 @@ async function mergeCollection(options) {
         data: {
           openid,
           id: write.id,
+          nickName: nickName || '',
+          displayName: displayName || '',
           updatedAt: write.data.updatedAt || EPOCH,
           deletedAt: '',
           data: write.data
@@ -284,15 +286,27 @@ exports.main = async (event, context) => {
       exercises.tombstones.concat(cloudExerciseTombstones)
     );
 
-    const previousNickName = (profile && profile.profile && profile.profile.nickName) || '';
-    if (previousNickName !== nickName) {
-      try {
+    // Backfill denormalized names for records created by an older sync
+    // function. Do this even when the nickname itself did not change.
+    const needsWorkoutNameBackfill = workoutDocs.some((doc) => (
+      doc.nickName !== nickName || doc.displayName !== displayName
+    ));
+    const needsExerciseNameBackfill = exerciseDocs.some((doc) => (
+      doc.nickName !== nickName || doc.displayName !== displayName
+    ));
+    try {
+      if (needsWorkoutNameBackfill) {
         await db.collection('gymlog_workouts').where({ openid: OPENID }).update({
           data: { nickName, displayName }
         });
-      } catch (e) {
-        console.error('failed to update workout nickname fields', e);
       }
+      if (needsExerciseNameBackfill) {
+        await db.collection('gymlog_exercises').where({ openid: OPENID }).update({
+          data: { nickName, displayName }
+        });
+      }
+    } catch (e) {
+      console.error('failed to backfill user name fields', e);
     }
 
     await profileRef.set({
