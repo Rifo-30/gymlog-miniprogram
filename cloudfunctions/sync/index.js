@@ -64,7 +64,9 @@ async function mergeCollection(options) {
     collectionName,
     localItems,
     localTombstones,
-    cloudDocs
+    cloudDocs,
+    nickName,
+    displayName
   } = options;
   const localMap = mapById(localItems);
   const cloudMap = {};
@@ -142,6 +144,8 @@ async function mergeCollection(options) {
           data: {
             openid,
             id: write.id,
+            nickName: nickName || '',
+            displayName: displayName || '',
             updatedAt: write.deletedAt,
             deletedAt: write.deletedAt,
             data: null
@@ -206,6 +210,13 @@ exports.main = async (event, context) => {
       ? (local.profile || null)
       : (profile.profile || null);
     const profileUpdatedAt = later(localProfileAt, cloudProfileAt);
+    const nickName = (userProfile && userProfile.nickName) || '';
+    const displayName = nickName
+      ? `${nickName} · ${OPENID.slice(-4)}`
+      : `用户 · ${OPENID.slice(-4)}`;
+    const userProfileWithDisplay = userProfile
+      ? Object.assign({}, userProfile, { displayName })
+      : { displayName };
 
     const [workoutDocs, exerciseDocs] = await Promise.all([
       fetchAll('gymlog_workouts', OPENID),
@@ -220,7 +231,9 @@ exports.main = async (event, context) => {
       collectionName: 'gymlog_workouts',
       localItems: local.workouts || [],
       localTombstones: local.deletedWorkouts || [],
-      cloudDocs: workoutDocs
+      cloudDocs: workoutDocs,
+      nickName,
+      displayName
     });
 
     const exercises = await mergeCollection({
@@ -228,7 +241,9 @@ exports.main = async (event, context) => {
       collectionName: 'gymlog_exercises',
       localItems: local.customExercises || [],
       localTombstones: local.deletedCustomExercises || [],
-      cloudDocs: exerciseDocs
+      cloudDocs: exerciseDocs,
+      nickName,
+      displayName
     });
 
     const mergedDeletedWorkouts = mapTombstones(
@@ -238,14 +253,27 @@ exports.main = async (event, context) => {
       exercises.tombstones.concat(cloudExerciseTombstones)
     );
 
+    const previousNickName = (profile && profile.profile && profile.profile.nickName) || '';
+    if (previousNickName !== nickName) {
+      try {
+        await db.collection('gymlog_workouts').where({ openid: OPENID }).update({
+          data: { nickName, displayName }
+        });
+      } catch (e) {
+        console.error('failed to update workout nickname fields', e);
+      }
+    }
+
     await profileRef.set({
       data: {
         openid: OPENID,
+        nickName,
+        displayName,
         settings,
         settingsUpdatedAt,
         activeWorkout,
         activeWorkoutUpdatedAt,
-        profile: userProfile,
+        profile: userProfileWithDisplay,
         profileUpdatedAt,
         deletedWorkouts: Object.keys(mergedDeletedWorkouts).map((key) => mergedDeletedWorkouts[key]),
         deletedCustomExercises: Object.keys(mergedDeletedExercises).map((key) => mergedDeletedExercises[key]),
@@ -263,7 +291,7 @@ exports.main = async (event, context) => {
         settingsUpdatedAt,
         activeWorkout,
         activeWorkoutUpdatedAt,
-        profile: userProfile,
+        profile: userProfileWithDisplay,
         profileUpdatedAt,
         workouts: workouts.items,
         customExercises: exercises.items,

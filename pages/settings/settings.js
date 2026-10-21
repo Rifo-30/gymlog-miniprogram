@@ -35,7 +35,8 @@ Page({
       avatarUrl: '',
       avatarFileId: '',
       heightCm: 0,
-      weightKg: 0
+      weightKg: 0,
+      displayName: ''
     },
     profileMetaLabel: '',
     displayAvatarUrl: '',
@@ -125,7 +126,8 @@ Page({
       avatarUrl: '',
       avatarFileId: '',
       heightCm: 0,
-      weightKg: 0
+      weightKg: 0,
+      displayName: ''
     }, db.profile || {});
     const profileMeta = [];
     if (Number(profile.heightCm) > 0) profileMeta.push(`${profile.heightCm} cm`);
@@ -252,7 +254,8 @@ Page({
       avatarUrl,
       avatarFileId,
       heightCm,
-      weightKg
+      weightKg,
+      displayName: nickName
     };
     storage.saveDB(db);
     wx.hideLoading();

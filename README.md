@@ -149,6 +149,14 @@ gymlog.db.v1
 
 之后由 `utils/sync.js` 自动同步到云开发数据库。
 
+### 后台查看用户数据
+
+- `gymlog_profiles` 文档的 `_id` 使用 openid；
+- 用户资料里保存 `profile.nickName`；
+- 文档顶层额外保存 `displayName`，格式类似 `张三 · a1b2`；
+- 每条 `gymlog_workouts` 文档额外保存 `nickName` 和 `displayName`，方便在云开发控制台直接识别用户；
+- 用户修改昵称后，同步云函数会批量刷新该用户训练记录中的昵称字段。
+
 ### 多设备同步
 
 - 打开小程序时自动拉取并合并云端数据；
@@ -173,8 +181,8 @@ gymlog.cloud.meta.v1
 云端集合：
 
 ```text
-gymlog_profiles             用户设置、微信资料、当前训练、删除墓碑
-gymlog_workouts             每次训练记录
+gymlog_profiles             用户设置、微信资料、displayName、当前训练、删除墓碑
+gymlog_workouts             每次训练记录，冗余 nickName/displayName 方便后台查看
 gymlog_exercises            历史自定义动作（兼容保留）
 云存储 avatars/              微信头像文件
 ```

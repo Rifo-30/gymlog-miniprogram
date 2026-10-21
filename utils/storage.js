@@ -34,6 +34,7 @@ function createDefaultDB() {
       avatarFileId: '',
       heightCm: 0,
       weightKg: 0,
+      displayName: '',
       updatedAt: EPOCH
     },
     deletedWorkouts: [],
@@ -49,7 +50,7 @@ function normalizeDB(raw) {
   db.settings = Object.assign({}, defaults.settings, db.settings || {});
   db.workouts = Array.isArray(db.workouts) ? db.workouts : [];
   db.customExercises = Array.isArray(db.customExercises) ? db.customExercises : [];
-  db.profile = Object.assign({ nickName: '', avatarUrl: '', avatarFileId: '', heightCm: 0, weightKg: 0, updatedAt: EPOCH }, db.profile || {});
+  db.profile = Object.assign({ nickName: '', avatarUrl: '', avatarFileId: '', heightCm: 0, weightKg: 0, displayName: '', updatedAt: EPOCH }, db.profile || {});
   db.deletedWorkouts = Array.isArray(db.deletedWorkouts) ? db.deletedWorkouts : [];
   db.deletedCustomExercises = Array.isArray(db.deletedCustomExercises) ? db.deletedCustomExercises : [];
   db.activeWorkout = db.activeWorkout || null;
