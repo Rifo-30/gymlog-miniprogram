@@ -1,6 +1,7 @@
 const format = require('./format');
 const dateUtil = require('./date');
 const cardioUtil = require('./cardio');
+const timeUtil = require('./time');
 
 function makeId(prefix) {
   return `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
@@ -43,7 +44,7 @@ function createWorkout(settings, options) {
   return {
     id: makeId('w'),
     name: opts.name || composeWorkoutName(opts.exercises || []),
-    startedAt: new Date().toISOString(),
+    startedAt: timeUtil.nowChinaIso(),
     endedAt: null,
     status: 'active',
     note: '',
@@ -81,7 +82,7 @@ function duplicateWorkout(source, options) {
   return {
     id: makeId('w'),
     name: opts.name || source.name || composeWorkoutName(exercises),
-    startedAt: new Date().toISOString(),
+    startedAt: timeUtil.nowChinaIso(),
     endedAt: null,
     status: 'active',
     note: '',
@@ -91,7 +92,7 @@ function duplicateWorkout(source, options) {
 
 function finishWorkout(workout) {
   const copy = JSON.parse(JSON.stringify(workout));
-  copy.endedAt = new Date().toISOString();
+  copy.endedAt = timeUtil.nowChinaIso();
   copy.status = 'completed';
   return copy;
 }

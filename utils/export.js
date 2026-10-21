@@ -1,4 +1,5 @@
 const dateUtil = require('./date');
+const timeUtil = require('./time');
 
 function csvEscape(value) {
   const text = value == null ? '' : String(value);
@@ -12,7 +13,7 @@ function buildExport(db) {
   return {
     app: '练记',
     version: 1,
-    exportedAt: new Date().toISOString(),
+    exportedAt: timeUtil.nowChinaIso(),
     settings: db.settings,
     workouts: db.workouts,
     customExercises: db.customExercises

@@ -1,6 +1,7 @@
 const storage = require('./storage');
 const cloud = require('./cloud');
 const cardioUtil = require('./cardio');
+const timeUtil = require('./time');
 
 const META_KEY = 'gymlog.cloud.meta.v1';
 const EPOCH = '1970-01-01T00:00:00.000Z';
@@ -210,7 +211,7 @@ async function syncNow() {
 
     const mergedData = preferLocalProfile(result.data, current);
     storage.saveDB(mergedData, { skipTouch: true, skipNotify: true });
-    const syncedAt = result.syncedAt || new Date().toISOString();
+    const syncedAt = result.syncedAt || timeUtil.nowChinaIso();
     const nextMeta = Object.assign({}, getMeta(), {
       openid: result.openid || getMeta().openid || '',
       lastSyncAt: syncedAt

@@ -4,6 +4,7 @@ const workoutUtil = require('../../utils/workout');
 const format = require('../../utils/format');
 const dateUtil = require('../../utils/date');
 const cardioUtil = require('../../utils/cardio');
+const timeUtil = require('../../utils/time');
 
 Page({
   data: {
@@ -639,7 +640,7 @@ Page({
   completeWorkout() {
     const clean = workoutUtil.stripWorkoutForStorage(this.data.workout);
     const db = storage.getDB();
-    const now = new Date().toISOString();
+    const now = timeUtil.nowChinaIso();
     if (this._isEditing) {
       const index = db.workouts.findIndex((item) => item.id === clean.id);
       if (index >= 0) {

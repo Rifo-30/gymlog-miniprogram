@@ -4,6 +4,35 @@ cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
 const EPOCH = '1970-01-01T00:00:00.000Z';
 const TOMBSTONE_DAYS = 90;
+const CHINA_OFFSET_MS = 8 * 60 * 60 * 1000;
+const ISO_PATTERN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}(Z|[+-]\d{2}:\d{2})$/;
+
+function toChinaIso(value) {
+  const date = value === undefined ? new Date() : new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  return new Date(date.getTime() + CHINA_OFFSET_MS)
+    .toISOString()
+    .replace('Z', '+08:00');
+}
+
+function nowChinaIso() {
+  return toChinaIso(new Date());
+}
+
+function normalizeTimesDeep(value) {
+  if (Array.isArray(value)) return value.map(normalizeTimesDeep);
+  if (value && typeof value === 'object') {
+    const next = {};
+    Object.keys(value).forEach((key) => {
+      next[key] = normalizeTimesDeep(value[key]);
+    });
+    return next;
+  }
+  if (typeof value === 'string' && ISO_PATTERN.test(value)) {
+    return toChinaIso(value);
+  }
+  return value;
+}
 
 function timestamp(value) {
   const time = new Date(value || 0).getTime();
@@ -175,14 +204,14 @@ exports.main = async (event, context) => {
   if (!OPENID) return { ok: false, error: '无法获取微信身份' };
 
   try {
-    const local = event.local || {};
-    const now = new Date().toISOString();
+    const local = normalizeTimesDeep(event.local || {});
+    const now = nowChinaIso();
     const profileRef = db.collection('gymlog_profiles').doc(OPENID);
     let profile = null;
 
     try {
       const profileResult = await profileRef.get();
-      profile = profileResult.data || null;
+      profile = profileResult.data ? normalizeTimesDeep(profileResult.data) : null;
     } catch (e) {
       profile = null;
     }
@@ -218,10 +247,12 @@ exports.main = async (event, context) => {
       ? Object.assign({}, userProfile, { displayName })
       : { displayName };
 
-    const [workoutDocs, exerciseDocs] = await Promise.all([
+    const [workoutDocsRaw, exerciseDocsRaw] = await Promise.all([
       fetchAll('gymlog_workouts', OPENID),
       fetchAll('gymlog_exercises', OPENID)
     ]);
+    const workoutDocs = normalizeTimesDeep(workoutDocsRaw);
+    const exerciseDocs = normalizeTimesDeep(exerciseDocsRaw);
 
     const cloudWorkoutTombstones = (profile && profile.deletedWorkouts) || [];
     const cloudExerciseTombstones = (profile && profile.deletedCustomExercises) || [];

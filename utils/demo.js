@@ -1,6 +1,7 @@
 const storage = require('./storage');
 const exercises = require('./exercises');
 const workoutUtil = require('./workout');
+const timeUtil = require('./time');
 
 function makeDate(daysAgo, hour) {
   const d = new Date();
@@ -12,7 +13,7 @@ function makeDate(daysAgo, hour) {
 function buildWorkout(name, daysAgo, items, settings) {
   const start = makeDate(daysAgo);
   const workout = workoutUtil.createWorkout(settings, { name });
-  workout.startedAt = start.toISOString();
+  workout.startedAt = timeUtil.toChinaIso(start);
   workout.exercises = items.map((item) => {
     const exercise = exercises.findById(item.id);
     const workoutExercise = workoutUtil.createWorkoutExercise(exercise, settings, '');
@@ -26,7 +27,7 @@ function buildWorkout(name, daysAgo, items, settings) {
     });
     return workoutExercise;
   });
-  workout.endedAt = new Date(start.getTime() + 55 * 60 * 1000).toISOString();
+  workout.endedAt = timeUtil.toChinaIso(new Date(start.getTime() + 55 * 60 * 1000));
   workout.status = 'completed';
   return workout;
 }

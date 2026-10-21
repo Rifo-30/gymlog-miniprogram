@@ -1,3 +1,5 @@
+const timeUtil = require('./time');
+
 const DB_KEY = 'gymlog.db.v1';
 const EPOCH = '1970-01-01T00:00:00.000Z';
 const TOMBSTONE_DAYS = 90;
@@ -163,7 +165,7 @@ function saveDB(inputDB, options) {
   try {
     if (!opts.skipTouch) {
       const prev = getDB();
-      const now = new Date().toISOString();
+      const now = timeUtil.nowChinaIso();
 
       if (!sameData(prev.settings, db.settings)) {
         db.settingsUpdatedAt = now;

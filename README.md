@@ -149,6 +149,21 @@ gymlog.db.v1
 
 之后由 `utils/sync.js` 自动同步到云开发数据库。
 
+### 时间格式
+
+云数据库中的时间统一保存为带中国时区偏移的 ISO 8601 字符串，例如：
+
+```text
+2026-10-21T16:45:32.539+08:00
+```
+
+新产生的数据会自动使用 `+08:00`。历史数据需要部署并运行一次 `cloudfunctions/migrate-time`：
+
+1. 右键 `cloudfunctions/migrate-time`；
+2. 选择「上传并部署：云端安装依赖」；
+3. 在云开发控制台运行一次该云函数，参数使用 `{}`；
+4. 返回结果中的 `results` 会显示每个集合迁移了多少条记录。
+
 ### 后台查看用户数据
 
 - `gymlog_profiles` 文档的 `_id` 使用 openid；
@@ -223,6 +238,7 @@ cloudfunctions/
   login/                        获取 openid
   sync/                         合并本机与云端数据
   clear/                        清除当前用户云端数据
+  migrate-time/                 将历史时间字段迁移为中国标准时间
 assets/                         提示音和 tabBar 图标
 ```
 
