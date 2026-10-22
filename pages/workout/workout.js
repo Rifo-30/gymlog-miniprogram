@@ -626,7 +626,24 @@ Page({
       });
       return;
     }
-    this.completeWorkout();
+    this.confirmCompleteWorkout();
+  },
+
+  confirmCompleteWorkout() {
+    const parts = [];
+    if (this.data.totalSets > 0) parts.push(`${this.data.totalSets} 组力量训练`);
+    if (this.data.cardioCount > 0) parts.push(`${this.data.cardioCount} 项有氧训练`);
+    wx.showModal({
+      title: this._isEditing ? '保存这次修改？' : '结束本次训练？',
+      content: parts.length
+        ? `本次已记录${parts.join('、')}，结束后仍可在历史记录中查看和编辑。`
+        : '结束后这次训练将被保存。',
+      confirmText: this._isEditing ? '保存' : '结束训练',
+      cancelText: '继续训练',
+      success: (res) => {
+        if (res.confirm) this.completeWorkout();
+      }
+    });
   },
 
   discardActiveWorkout() {

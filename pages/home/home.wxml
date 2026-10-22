@@ -50,7 +50,7 @@
       <view class="weekly-volume num">{{weeklyVolumeLabel}}</view>
     </view>
     <view class="progress mt-16">
-      <view class="progress-fill" style="width: {{weekly.percent}}"></view>
+      <view class="progress-fill" style="width: {{weekly.percent}}%;"></view>
     </view>
     <view class="row between mt-12">
       <view class="tiny muted">目标 {{weekly.goal}} 次</view>
