@@ -750,17 +750,86 @@ textarea {
   position: relative;
   width: 620rpx;
   max-width: 100%;
-  height: 300rpx;
+  height: 350rpx;
   margin: 24rpx auto 0;
+}
+
+.trend-primary-stage,
+.trend-secondary-stage {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom: 1rpx solid var(--border);
+}
+
+.trend-primary-stage {
+  height: 180rpx;
+  background-image: linear-gradient(to top, var(--border) 1rpx, transparent 1rpx);
+  background-size: 100% 46rpx;
+}
+
+.trend-secondary-stage {
+  height: 110rpx;
+  margin-top: 12rpx;
+  background-image: linear-gradient(to top, var(--border) 1rpx, transparent 1rpx);
+  background-size: 100% 55rpx;
+}
+
+.trend-axis-caption,
+.trend-axis-max,
+.trend-axis-min {
+  position: absolute;
+  z-index: 4;
+  color: var(--muted);
+  font-size: 17rpx;
+  line-height: 1.2;
+  pointer-events: none;
+}
+
+.trend-axis-caption {
+  left: 0;
+  top: 0;
+  padding-right: 8rpx;
+  background: var(--surface);
+}
+
+.trend-axis-max {
+  right: 0;
+  top: 0;
+  max-width: 250rpx;
+  text-align: right;
+  background: var(--surface);
+}
+
+.trend-axis-min {
+  right: 0;
+  bottom: 2rpx;
+  background: var(--surface);
 }
 
 .trend-bar {
   position: absolute;
   z-index: 1;
-  width: 20rpx;
+  width: 22rpx;
   border-radius: 6rpx 6rpx 0 0;
   background: var(--surface-3);
-  opacity: 0.82;
+  border: 1rpx solid var(--border);
+  opacity: 1;
+}
+
+.trend-bar.active {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+}
+
+.trend-column {
+  position: absolute;
+  z-index: 6;
+  border-radius: 12rpx;
+}
+
+.trend-column:active {
+  background: var(--primary-soft);
 }
 
 .trend-line {

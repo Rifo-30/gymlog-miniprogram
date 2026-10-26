@@ -124,12 +124,25 @@
           </view>
         </view>
 
-        <view class="trend-stage">
-          <view wx:for="{{trendBars}}" wx:key="index" class="trend-bar" style="{{item.style}}"></view>
-          <view wx:for="{{trendLines}}" wx:key="index" class="trend-line" style="{{item.style}}"></view>
-          <view wx:for="{{trendPoints}}" wx:key="index" class="trend-point" style="{{item.style}}" data-index="{{item.index}}" bindtap="onTrendPointTap">
-            <view class="trend-dot {{item.selected ? 'active' : ''}}"></view>
+                <view class="trend-stage">
+          <view class="trend-primary-stage">
+            <view class="trend-axis-caption">{{trendPrimaryAxisLabel}}</view>
+            <view class="trend-axis-max">{{trendPrimaryMaxLabel}}</view>
+            <view class="trend-axis-min">{{trendPrimaryMinLabel}}</view>
+            <view wx:for="{{trendLines}}" wx:key="index" class="trend-line" style="{{item.style}}"></view>
+            <view wx:for="{{trendPoints}}" wx:key="index" class="trend-point" style="{{item.style}}">
+              <view class="trend-dot {{item.selected ? 'active' : ''}}"></view>
+            </view>
           </view>
+
+          <view class="trend-secondary-stage">
+            <view class="trend-axis-caption">{{trendSecondaryAxisLabel}}</view>
+            <view class="trend-axis-max">{{trendSecondaryMaxLabel}}</view>
+            <view class="trend-axis-min">0</view>
+            <view wx:for="{{trendBars}}" wx:key="index" class="trend-bar {{item.selected ? 'active' : ''}}" style="{{item.style}}"></view>
+          </view>
+
+          <view wx:for="{{trendColumns}}" wx:key="index" class="trend-column" style="{{item.style}}" data-index="{{item.index}}" bindtap="onTrendPointTap"></view>
           <view wx:for="{{trendLabels}}" wx:key="index" class="trend-x-label" style="{{item.style}}">{{item.label}}</view>
         </view>
 
