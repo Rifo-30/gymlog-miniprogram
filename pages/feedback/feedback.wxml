@@ -1,0 +1,32 @@
+<view class="page theme-{{theme}} feedback-page">
+  <view class="page-top">
+    <view class="h1">产品建议</view>
+    <view class="muted small mt-8">你的建议会帮助练记变得更好。</view>
+  </view>
+
+  <view class="card mt-24">
+    <view class="section-title">建议类型</view>
+    <view class="chip-row mt-12">
+      <view wx:for="{{categories}}" wx:key="*this" class="chip {{category === item ? 'active' : ''}}" data-value="{{item}}" bindtap="selectCategory">{{item}}</view>
+    </view>
+
+    <view class="field mt-24">
+      <view class="row between">
+        <view class="field-label">建议内容</view>
+        <view class="tiny muted">{{contentLength}} / 1000</view>
+      </view>
+      <textarea class="textarea feedback-textarea" maxlength="1000" placeholder="请描述你希望增加的功能、遇到的问题或使用感受..." placeholder-class="input-placeholder" value="{{content}}" bindinput="onContentInput" />
+    </view>
+
+    <view class="field mt-20">
+      <view class="field-label">联系方式（选填）</view>
+      <input class="input" maxlength="100" placeholder="微信号或邮箱，方便我们联系你" placeholder-class="input-placeholder" value="{{contact}}" bindinput="onContactInput" />
+    </view>
+
+    <view class="feedback-note mt-16">
+      反馈会关联当前微信身份和昵称，仅用于查看问题和回访，不会公开展示。
+    </view>
+
+    <button class="btn btn-primary btn-block mt-24" loading="{{submitting}}" disabled="{{submitting}}" bindtap="submitFeedback">提交建议</button>
+  </view>
+</view>

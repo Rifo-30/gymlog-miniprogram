@@ -150,6 +150,13 @@
   </view>
 
   <view class="card card-flat setting-card">
+    <view class="setting-row" bindtap="goFeedback">
+      <view>
+        <view class="setting-name">产品建议</view>
+        <view class="setting-desc">功能建议或问题反馈</view>
+      </view>
+      <view class="chevron">›</view>
+    </view>
     <view class="setting-row" bindtap="showPrivacy">
       <view class="setting-name">数据与隐私</view>
       <view class="chevron">›</view>

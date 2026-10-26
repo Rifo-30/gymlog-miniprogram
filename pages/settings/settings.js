@@ -367,7 +367,12 @@ Page({
     });
   },
 
+  goFeedback() {
+    wx.navigateTo({ url: '/pages/feedback/feedback' });
+  },
+
   showPrivacy() {
+
     wx.showModal({
       title: '数据与隐私',
       content: '当前版本采用本地优先 + 云同步模式：训练记录会保存到微信云开发数据库。你主动选择的微信头像和昵称也会保存到云端，用于在你的设备间同步展示。你可以随时复制 JSON/CSV 导出。正式发布前请补充隐私政策和用户协议。',

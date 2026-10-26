@@ -9,7 +9,8 @@
     "pages/history/history",
     "pages/workout-detail/workout-detail",
     "pages/stats/stats",
-    "pages/settings/settings"
+    "pages/settings/settings",
+    "pages/feedback/feedback"
   ],
   "window": {
     "navigationBarTitleText": "练记",

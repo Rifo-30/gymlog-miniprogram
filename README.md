@@ -42,6 +42,7 @@ const CLOUD_ENV_ID = 'your-env-id'
 gymlog_profiles
 gymlog_workouts
 gymlog_exercises
+gymlog_feedback
 ```
 
 建议把集合权限设置为：
@@ -60,6 +61,8 @@ gymlog_exercises
 cloudfunctions/login
 cloudfunctions/sync
 cloudfunctions/clear
+cloudfunctions/submit-feedback
+cloudfunctions/migrate-time
 ```
 
 三个云函数分别负责：
@@ -99,6 +102,7 @@ cloudfunctions/clear
 - 训练总结：时长、组数、训练量、本次 PR
 - 编辑历史训练、复制训练、删除训练
 - 设置：kg/lb、默认休息、每周目标、深色/浅色/跟随系统
+- 产品建议：从「我的 → 产品建议」提交功能建议或问题反馈
 - 数据导出：复制 JSON / CSV
 - 微信登录、微信头像/昵称/身高/体重资料展示与云端同步
 - 云同步、多设备数据合并
@@ -202,6 +206,7 @@ gymlog.cloud.meta.v1
 gymlog_profiles             用户设置、微信资料、displayName、当前训练、删除墓碑
 gymlog_workouts             每次训练记录，冗余 nickName/displayName 方便后台查看
 gymlog_exercises            历史自定义动作（兼容保留）
+gymlog_feedback             产品建议与问题反馈
 云存储 avatars/              微信头像文件
 ```
 
@@ -226,6 +231,7 @@ pages/                          页面
   workout-detail/               训练详情 / 训练总结
   stats/                        统计
   settings/                     设置、云同步与数据导出
+  feedback/                     产品建议提交
 utils/
   storage.js                    本地数据读写、变更追踪、删除墓碑
   sync.js                       微信登录、云同步、状态管理
@@ -241,6 +247,7 @@ cloudfunctions/
   login/                        获取 openid
   sync/                         合并本机与云端数据
   clear/                        清除当前用户云端数据
+  submit-feedback/              提交产品建议
   migrate-time/                 将历史时间字段迁移为中国标准时间
 assets/                         提示音和 tabBar 图标
 ```

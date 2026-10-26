@@ -1,0 +1,16 @@
+.feedback-page {
+  padding-bottom: 48rpx;
+}
+
+.feedback-textarea {
+  min-height: 260rpx;
+}
+
+.feedback-note {
+  padding: 14rpx 16rpx;
+  border-radius: 16rpx;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 21rpx;
+  line-height: 1.55;
+}
