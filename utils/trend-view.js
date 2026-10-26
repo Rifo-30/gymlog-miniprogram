@@ -2,13 +2,12 @@ const format = require('./format');
 const cardioUtil = require('./cardio');
 
 const CHART_WIDTH = 620;
-const PRIMARY_HEIGHT = 180;
-const PRIMARY_TOP = 22;
-const PRIMARY_PLOT_HEIGHT = 138;
-const SECONDARY_HEIGHT = 110;
-const SECONDARY_GAP = 12;
-const LABEL_TOP = 322;
-const STAGE_HEIGHT = 350;
+const STAGE_HEIGHT = 320;
+const PLOT_TOP = 24;
+const PLOT_HEIGHT = 180;
+const BAR_BASE = 46;
+const BAR_MAX_HEIGHT = 130;
+const LABEL_TOP = 286;
 const COLUMN_HEIGHT = STAGE_HEIGHT;
 
 function buildTrendView(rawTrend, exercise, unit) {
@@ -113,6 +112,7 @@ function buildTrendView(rawTrend, exercise, unit) {
       trend: [],
       trendPoints: [],
       trendBars: [],
+      trendBarLabels: [],
       trendLines: [],
       trendLabels: [],
       trendColumns: [],
@@ -150,6 +150,7 @@ function buildTrendView(rawTrend, exercise, unit) {
   const selectedIndex = items.length - 1;
   const points = [];
   const bars = [];
+  const barLabels = [];
   const lines = [];
   const columns = [];
   const labels = [];
@@ -163,10 +164,11 @@ function buildTrendView(rawTrend, exercise, unit) {
   items.forEach((item, index) => {
     const x = xValues[index];
     const score = Number(item.score) || 0;
-    const y = PRIMARY_TOP + (1 - ((score - lower) / (upper - lower))) * PRIMARY_PLOT_HEIGHT;
+    const y = PLOT_TOP + (1 - ((score - lower) / (upper - lower))) * PLOT_HEIGHT;
     const barHeight = maxSecondary > 0
-      ? Math.max(4, (Number(item.secondaryValue) || 0) / maxSecondary * 96)
+      ? Math.max(4, (Number(item.secondaryValue) || 0) / maxSecondary * BAR_MAX_HEIGHT)
       : 4;
+    const barTop = STAGE_HEIGHT - BAR_BASE - barHeight - 20;
     item.selected = index === selectedIndex;
     points.push({
       index,
@@ -175,7 +177,13 @@ function buildTrendView(rawTrend, exercise, unit) {
     });
     bars.push({
       index,
-      style: `left:${x - 11}rpx;bottom:0;height:${barHeight}rpx;`,
+      style: `left:${x - 11}rpx;bottom:${BAR_BASE}rpx;height:${barHeight}rpx;`,
+      selected: index === selectedIndex
+    });
+    barLabels.push({
+      index,
+      style: `left:${Math.max(0, Math.min(CHART_WIDTH - 96, x - 48))}rpx;top:${barTop}rpx;`,
+      label: item.secondaryLabel,
       selected: index === selectedIndex
     });
     columns.push({
@@ -190,7 +198,7 @@ function buildTrendView(rawTrend, exercise, unit) {
     if (index > 0) {
       const prevX = xValues[index - 1];
       const prevScore = Number(items[index - 1].score) || 0;
-      const prevY = PRIMARY_TOP + (1 - ((prevScore - lower) / (upper - lower))) * PRIMARY_PLOT_HEIGHT;
+      const prevY = PLOT_TOP + (1 - ((prevScore - lower) / (upper - lower))) * PLOT_HEIGHT;
       const dx = x - prevX;
       const dy = y - prevY;
       const length = Math.sqrt(dx * dx + dy * dy);
@@ -206,11 +214,12 @@ function buildTrendView(rawTrend, exercise, unit) {
     trend: items,
     trendPoints: points,
     trendBars: bars,
+    trendBarLabels: barLabels,
     trendLines: lines,
     trendLabels: labels,
     trendColumns: columns,
     trendTitle: `${exercise.name} · ${metricName}`,
-    trendSubtitle: `上层折线为${metricName}，下层柱状为${secondaryName}`,
+    trendSubtitle: `折线为${metricName}，柱状为${secondaryName}`,
     trendMetricName: metricName,
     trendSecondaryName: secondaryName,
     trendPrimaryAxisLabel: `${metricName}${primaryAxisUnit}`,
@@ -226,7 +235,5 @@ function buildTrendView(rawTrend, exercise, unit) {
 module.exports = {
   buildTrendView,
   CHART_WIDTH,
-  PRIMARY_HEIGHT,
-  SECONDARY_HEIGHT,
   STAGE_HEIGHT
 };

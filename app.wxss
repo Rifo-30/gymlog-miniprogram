@@ -721,7 +721,13 @@ textarea {
   flex-direction: column;
   align-items: flex-end;
   gap: 8rpx;
+  max-width: 290rpx;
   padding-top: 4rpx;
+  text-align: right;
+}
+
+.legend-item text {
+  line-height: 1.35;
 }
 
 .legend-item {
@@ -750,7 +756,7 @@ textarea {
   position: relative;
   width: 620rpx;
   max-width: 100%;
-  height: 350rpx;
+  height: 320rpx;
   margin: 24rpx auto 0;
 }
 
@@ -820,6 +826,23 @@ textarea {
 .trend-bar.active {
   background: var(--primary-soft);
   border-color: var(--primary);
+}
+
+.trend-bar-label {
+  position: absolute;
+  z-index: 4;
+  width: 96rpx;
+  color: var(--muted);
+  font-size: 15rpx;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.trend-bar-label.active {
+  color: var(--primary);
 }
 
 .trend-column {
