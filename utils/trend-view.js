@@ -177,8 +177,7 @@ function buildTrendView(rawTrend, exercise, unit) {
     });
     bars.push({
       index,
-      style: `left:${x - 11}rpx;bottom:${BAR_BASE}rpx;height:${barHeight}rpx;`,
-      selected: index === selectedIndex
+      style: `left:${x - 11}rpx;bottom:${BAR_BASE}rpx;height:${barHeight}rpx;`
     });
     barLabels.push({
       index,

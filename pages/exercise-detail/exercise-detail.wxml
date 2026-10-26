@@ -62,7 +62,7 @@
       </view>
 
                         <view class="trend-stage">
-              <view wx:for="{{trendBars}}" wx:key="index" class="trend-bar {{item.selected ? 'active' : ''}}" style="{{item.style}}"></view>
+              <view wx:for="{{trendBars}}" wx:key="index" class="trend-bar" style="{{item.style}}"></view>
               <view wx:for="{{trendBarLabels}}" wx:key="index" class="trend-bar-label {{item.selected ? 'active' : ''}}" style="{{item.style}}">{{item.label}}</view>
               <view wx:for="{{trendLines}}" wx:key="index" class="trend-line" style="{{item.style}}"></view>
               <view wx:for="{{trendPoints}}" wx:key="index" class="trend-point" style="{{item.style}}">
