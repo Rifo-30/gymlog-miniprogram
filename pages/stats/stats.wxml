@@ -45,7 +45,7 @@
 
       <view wx:if="{{prCount > 4}}" class="pr-list-toggle" bindtap="togglePrList">
         <text>{{prExpanded ? '收起' : '查看全部'}}</text>
-        <text class="pr-arrow {{prExpanded ? 'expanded' : ''}}">⌄</text>
+        <view class="pr-chevron {{prExpanded ? 'expanded' : ''}}"></view>
       </view>
     </view>
 
