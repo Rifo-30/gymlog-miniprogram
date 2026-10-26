@@ -574,3 +574,260 @@ textarea {
 .center-text {
   text-align: center;
 }
+
+
+/* Shared interactive trend chart */
+.chart-card {
+  padding: 28rpx 20rpx 18rpx;
+}
+
+.bar-chart {
+  height: 260rpx;
+  display: flex;
+  align-items: flex-end;
+  gap: 12rpx;
+}
+
+.bar-column {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8rpx;
+}
+
+.bar-value {
+  font-size: 18rpx;
+  white-space: nowrap;
+}
+
+.bar-track {
+  width: 100%;
+  height: 150rpx;
+  display: flex;
+  align-items: flex-end;
+  border-radius: 8rpx;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+.bar-fill {
+  width: 100%;
+  min-height: 4rpx;
+  border-radius: 8rpx;
+  background: var(--primary);
+}
+
+.bar-label {
+  font-size: 18rpx;
+}
+
+.history-name {
+  font-size: 28rpx;
+  font-weight: 650;
+}
+
+.history-best {
+  color: var(--primary);
+  font-size: 24rpx;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.note-preview {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 22rpx;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.cardio-history-summary {
+  padding: 10rpx 14rpx;
+  border-radius: 14rpx;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 22rpx;
+  line-height: 1.5;
+}
+
+.exercise-detail-page .stat-value {
+  font-size: 30rpx;
+}
+
+.exercise-detail-page .stat-card {
+  min-height: 132rpx;
+}
+
+.history-best {
+  max-width: 190rpx;
+  text-align: right;
+  line-height: 1.25;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.exercise-detail-page .list-item:active {
+  opacity: 0.72;
+}
+
+.chart-card .bar-chart {
+  padding-top: 4rpx;
+}
+
+.chart-card {
+  padding: 24rpx 20rpx;
+}
+
+.trend-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.trend-latest-value {
+  margin-top: 4rpx;
+  color: var(--text);
+  font-size: 38rpx;
+  line-height: 1.15;
+  font-weight: 750;
+}
+
+.trend-change {
+  margin-top: 6rpx;
+  font-size: 21rpx;
+  font-weight: 650;
+}
+
+.trend-change.up {
+  color: var(--success);
+}
+
+.trend-change.down {
+  color: var(--danger);
+}
+
+.trend-change.flat {
+  color: var(--muted);
+}
+
+.trend-legend {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8rpx;
+  padding-top: 4rpx;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  color: var(--muted);
+  font-size: 19rpx;
+}
+
+.legend-line {
+  width: 28rpx;
+  height: 4rpx;
+  border-radius: 999rpx;
+  background: var(--primary);
+}
+
+.legend-bar {
+  width: 18rpx;
+  height: 16rpx;
+  border-radius: 4rpx 4rpx 0 0;
+  background: var(--surface-3);
+}
+
+.trend-stage {
+  position: relative;
+  width: 620rpx;
+  max-width: 100%;
+  height: 300rpx;
+  margin: 24rpx auto 0;
+}
+
+.trend-bar {
+  position: absolute;
+  z-index: 1;
+  width: 20rpx;
+  border-radius: 6rpx 6rpx 0 0;
+  background: var(--surface-3);
+  opacity: 0.82;
+}
+
+.trend-line {
+  position: absolute;
+  z-index: 2;
+  height: 2rpx;
+  transform-origin: 0 50%;
+  background: var(--primary);
+}
+
+.trend-point {
+  position: absolute;
+  z-index: 3;
+  width: 36rpx;
+  height: 36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trend-dot {
+  width: 12rpx;
+  height: 12rpx;
+  border: 3rpx solid var(--primary);
+  border-radius: 50%;
+  background: var(--surface);
+}
+
+.trend-dot.active {
+  width: 20rpx;
+  height: 20rpx;
+  background: var(--primary);
+  box-shadow: 0 0 0 7rpx var(--primary-soft);
+}
+
+.trend-x-label {
+  position: absolute;
+  z-index: 4;
+  width: 64rpx;
+  color: var(--muted);
+  font-size: 18rpx;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.trend-detail {
+  margin-top: 8rpx;
+  padding: 16rpx 18rpx;
+  border-radius: 18rpx;
+  background: var(--surface-2);
+}
+
+.trend-detail-item {
+  max-width: 54%;
+  min-width: 0;
+}
+
+.trend-detail-right {
+  margin-left: auto;
+  text-align: right;
+}
+
+.trend-detail-value {
+  margin-top: 5rpx;
+  color: var(--text-2);
+  font-size: 24rpx;
+  font-weight: 650;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}

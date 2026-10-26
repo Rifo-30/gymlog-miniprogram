@@ -3,7 +3,8 @@ const storage = require('../../utils/storage');
 const workoutUtil = require('../../utils/workout');
 const dateUtil = require('../../utils/date');
 const format = require('../../utils/format');
-const cardioUtil = require('../../utils/cardio');
+const exercisesUtil = require('../../utils/exercises');
+const trendViewUtil = require('../../utils/trend-view');
 
 Page({
   data: {
@@ -25,6 +26,16 @@ Page({
     selectedExerciseId: '',
     selectedExerciseName: '',
     trend: [],
+    trendPoints: [],
+    trendBars: [],
+    trendLines: [],
+    trendLabels: [],
+    trendTitle: '',
+    trendSubtitle: '',
+    trendMetricName: '',
+    trendSecondaryName: '',
+    selectedTrend: null,
+    selectedTrendIndex: -1,
     hasWorkouts: false
   },
 
@@ -82,19 +93,22 @@ Page({
     }
     if (selectedExerciseIndex >= exerciseOptions.length) selectedExerciseIndex = 0;
     const selected = exerciseOptions[selectedExerciseIndex] || null;
-    const trend = selected
-      ? workoutUtil.getExerciseTrend(db.workouts, selected.id, 8).map((item) => ({
-        label: item.label,
-        height: item.height,
-        valueLabel: item.type === 'cardio'
-          ? cardioUtil.formatDuration(item.duration)
-          : (selected.muscle && this.isWeightExercise(db, selected.id)
-            ? format.formatWeight(item.weightKg, unit, false)
-            : `${item.reps || item.duration || 0}`)
-      }))
-      : [];
+    const selectedExercise = selected
+      ? (exercisesUtil.findById(selected.id, db.customExercises) || {
+        id: selected.id,
+        name: selected.name,
+        type: selected.type || 'weight_reps'
+      })
+      : null;
+    const trendView = selectedExercise
+      ? trendViewUtil.buildTrendView(
+        workoutUtil.getExerciseTrend(db.workouts, selectedExercise.id, 8),
+        selectedExercise,
+        unit
+      )
+      : null;
 
-    this.setData({
+    this.setData(Object.assign({
       unit,
       weekly,
       weeklyVolumeLabel: format.formatVolume(weekly.volumeKg, unit),
@@ -105,18 +119,20 @@ Page({
       selectedExerciseIndex,
       selectedExerciseId: selected ? selected.id : '',
       selectedExerciseName: selected ? selected.name : '',
-      trend,
       hasWorkouts: completed.length > 0
-    });
-  },
-
-  isWeightExercise(db, exerciseId) {
-    const all = workoutUtil.getCompletedWorkouts(db.workouts);
-    for (let i = 0; i < all.length; i += 1) {
-      const exercise = (all[i].exercises || []).find((item) => item.exerciseId === exerciseId);
-      if (exercise) return exercise.type === 'weight_reps';
-    }
-    return true;
+    }, trendView || {
+      trend: [],
+      trendPoints: [],
+      trendBars: [],
+      trendLines: [],
+      trendLabels: [],
+      trendTitle: '',
+      trendSubtitle: '选择动作查看最近表现',
+      trendMetricName: '',
+      trendSecondaryName: '',
+      selectedTrend: null,
+      selectedTrendIndex: -1
+    }));
   },
 
   onExerciseChange(e) {
@@ -130,7 +146,22 @@ Page({
     }, () => this.load());
   },
 
+  onTrendPointTap(e) {
+    const index = Number(e.currentTarget.dataset.index);
+    const selected = this.data.trend[index];
+    if (!selected) return;
+    const points = this.data.trendPoints.map((point) => Object.assign({}, point, {
+      selected: point.index === index
+    }));
+    this.setData({
+      selectedTrend: selected,
+      selectedTrendIndex: index,
+      trendPoints: points
+    });
+  },
+
   openExercise(e) {
+
     const id = e.currentTarget.dataset.id;
     wx.navigateTo({ url: `/pages/exercise-detail/exercise-detail?id=${id}` });
   },
