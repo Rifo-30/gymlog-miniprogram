@@ -37,26 +37,56 @@
 
     <view class="section-head">
       <view>
-        <view class="section-title">最近趋势</view>
-        <view class="section-sub">每根柱子代表一次训练</view>
+        <view class="section-title">锻炼趋势</view>
+        <view class="section-sub">{{trendSubtitle}}</view>
       </view>
     </view>
 
     <view wx:if="{{trend.length}}" class="card chart-card">
-      <view class="bar-chart">
-        <view wx:for="{{trend}}" wx:key="label" class="bar-column">
-          <view class="bar-value tiny muted num">{{item.valueLabel}}</view>
-          <view class="bar-track">
-            <view class="bar-fill" style="height: {{item.height}}%;"></view>
+      <view class="trend-header">
+        <view>
+          <view class="tiny muted">选中数据 · {{selectedTrend.dateLabel}}</view>
+          <view class="trend-latest-value num">{{selectedTrend.scoreLabel}}</view>
+          <view class="trend-change {{selectedTrend.direction}}">{{selectedTrend.changeLabel}}</view>
+        </view>
+        <view class="trend-legend">
+          <view class="legend-item">
+            <view class="legend-line"></view>
+            <text>{{trendMetricName}}</text>
           </view>
-          <view class="bar-label tiny muted">{{item.label}}</view>
+          <view class="legend-item">
+            <view class="legend-bar"></view>
+            <text>{{trendSecondaryName}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="trend-stage">
+        <view wx:for="{{trendBars}}" wx:key="index" class="trend-bar" style="{{item.style}}"></view>
+        <view wx:for="{{trendLines}}" wx:key="index" class="trend-line" style="{{item.style}}"></view>
+        <view wx:for="{{trendPoints}}" wx:key="index" class="trend-point" style="{{item.style}}" data-index="{{item.index}}" bindtap="onTrendPointTap">
+          <view class="trend-dot {{item.selected ? 'active' : ''}}"></view>
+        </view>
+        <view wx:for="{{trendLabels}}" wx:key="index" class="trend-x-label" style="{{item.style}}">{{item.label}}</view>
+      </view>
+
+      <view class="trend-detail">
+        <view class="row between">
+          <view class="trend-detail-item">
+            <view class="tiny muted">最佳组</view>
+            <view class="trend-detail-value">{{selectedTrend.bestSetLabel || '—'}}</view>
+          </view>
+          <view class="trend-detail-item trend-detail-right">
+            <view class="tiny muted">{{trendSecondaryName}}</view>
+            <view class="trend-detail-value">{{selectedTrend.secondaryLabel}}</view>
+          </view>
         </view>
       </view>
     </view>
 
     <view wx:else class="empty mt-16">
       <view class="empty-title">还没有趋势</view>
-      <view class="empty-desc">完成几次这个动作后，这里会出现重量或次数变化。</view>
+      <view class="empty-desc">完成几次这个动作后，这里会出现估算 1RM 和训练容量变化。</view>
     </view>
 
     <view class="section-head">

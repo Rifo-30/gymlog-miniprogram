@@ -441,41 +441,79 @@ function getMuscleDistribution(workouts, days) {
 }
 
 function getExerciseTrend(workouts, exerciseId, limit) {
-  const history = getExerciseHistory(workouts, exerciseId).slice(0, Number(limit) || 8).reverse();
-  const items = history.map((item) => {
-    if (item.cardio) {
-      const duration = cardioUtil.durationSeconds(item.cardio);
-      return {
+  const history = getExerciseHistory(workouts, exerciseId)
+    .slice(0, Number(limit) || 8);
+  const grouped = {};
+
+  history.forEach((item) => {
+    const dateKey = dateUtil.toDateKey(item.date);
+    const isCardio = !!item.cardio;
+    const best = item.best;
+    const score = isCardio
+      ? cardioUtil.durationSeconds(item.cardio)
+      : bestSetScore(best, item.exercise.type);
+    const volumeKg = isCardio ? 0 : exerciseVolume(item.exercise);
+    const totalReps = isCardio
+      ? 0
+      : (item.sets || []).reduce((sum, set) => sum + (Number(set.reps) || 0), 0);
+    const totalDuration = isCardio
+      ? score
+      : (item.sets || []).reduce((sum, set) => sum + (Number(set.duration) || 0), 0);
+    const distanceKm = isCardio ? Number(item.cardio.distanceKm) || 0 : 0;
+    const calories = isCardio ? Number(item.cardio.calories) || 0 : 0;
+    const setsCount = isCardio ? 1 : (item.sets || []).length;
+
+    if (!grouped[dateKey]) {
+      grouped[dateKey] = {
         workoutId: item.workout.id,
         date: item.date,
         label: dateUtil.formatShort(item.date),
         dateLabel: dateUtil.formatMonthDay(item.date),
-        score: duration,
-        weightKg: 0,
-        reps: 0,
-        duration,
-        distanceKm: Number(item.cardio.distanceKm) || 0,
-        type: 'cardio',
-        cardio: item.cardio,
-        cardioType: cardioUtil.typeFromExercise(item.exercise),
-        set: null
+        score,
+        weightKg: best ? Number(best.weight) || 0 : 0,
+        reps: best ? Number(best.reps) || 0 : 0,
+        duration: best ? Number(best.duration) || 0 : score,
+        type: isCardio ? 'cardio' : item.exercise.type,
+        cardioType: isCardio ? cardioUtil.typeFromExercise(item.exercise) : '',
+        set: best || null,
+        cardio: item.cardio || null,
+        cardioSummary: isCardio
+          ? cardioUtil.summary(item.cardio, cardioUtil.typeFromExercise(item.exercise))
+          : '',
+        volumeKg,
+        totalReps,
+        totalDuration,
+        distanceKm,
+        calories,
+        setsCount
       };
+      return;
     }
-    const best = item.best;
-    const score = bestSetScore(best, item.exercise.type);
-    return {
-      workoutId: item.workout.id,
-      date: item.date,
-      label: dateUtil.formatShort(item.date),
-      dateLabel: dateUtil.formatMonthDay(item.date),
-      score,
-      weightKg: Number(best.weight) || 0,
-      reps: Number(best.reps) || 0,
-      duration: Number(best.duration) || 0,
-      type: item.exercise.type,
-      set: best
-    };
+
+    const entry = grouped[dateKey];
+    entry.volumeKg += volumeKg;
+    entry.totalReps += totalReps;
+    entry.totalDuration += totalDuration;
+    entry.distanceKm += distanceKm;
+    entry.calories += calories;
+    entry.setsCount += setsCount;
+    entry.workoutId = item.workout.id;
+    if (score > entry.score) {
+      entry.score = score;
+      entry.weightKg = best ? Number(best.weight) || 0 : 0;
+      entry.reps = best ? Number(best.reps) || 0 : 0;
+      entry.duration = best ? Number(best.duration) || 0 : score;
+      entry.set = best || null;
+      entry.cardio = item.cardio || null;
+      entry.cardioSummary = isCardio
+        ? cardioUtil.summary(item.cardio, cardioUtil.typeFromExercise(item.exercise))
+        : '';
+    }
   });
+
+  const items = Object.keys(grouped)
+    .map((key) => grouped[key])
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   const max = Math.max(1, ...items.map((item) => item.score));
   return items.map((item) => Object.assign({}, item, {
     height: item.score ? Math.max(12, Math.round((item.score / max) * 100)) : 4
