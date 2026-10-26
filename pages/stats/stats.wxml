@@ -21,31 +21,18 @@
     </view>
     <view wx:if="{{weekly.cardioSeconds}}" class="tiny muted mt-12">本周有氧总时长 {{weekly.cardioLabel}}</view>
 
-    <view class="card mt-24">
-      <view class="row between">
-        <view>
-          <view class="section-title">最近 4 周频率</view>
-          <view class="section-sub">每周完成的训练次数</view>
-        </view>
-        <view class="pill">{{weekly.count}} / {{weekly.goal}} 次</view>
-      </view>
-      <view class="week-chart mt-24">
-        <view wx:for="{{fourWeeks}}" wx:key="label" class="week-column">
-          <view class="week-value tiny num">{{item.count}}</view>
-          <view class="week-track">
-            <view class="week-fill" style="height: {{item.height}}%;"></view>
-          </view>
-          <view class="week-label tiny muted">{{item.label}}</view>
-        </view>
-      </view>
-    </view>
-
     <view class="section-head">
       <view>
         <view class="section-title">个人纪录</view>
-        <view class="section-sub">按最近达成时间排序</view>
+        <view class="section-sub">{{prCount}} 个动作 · 按最近训练排序</view>
       </view>
-      <view class="help-link" bindtap="showPRHelp">PR 是什么？</view>
+      <view class="pr-head-actions">
+        <view wx:if="{{prCount > 4}}" class="pr-toggle" bindtap="togglePrList">
+          <text>{{prExpanded ? '收起' : '查看全部'}}</text>
+          <text class="pr-arrow {{prExpanded ? 'expanded' : ''}}">⌄</text>
+        </view>
+        <view class="help-link" bindtap="showPRHelp">PR 是什么？</view>
+      </view>
     </view>
 
     <view wx:if="{{prs.length}}" class="card card-flat">

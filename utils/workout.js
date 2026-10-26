@@ -313,20 +313,44 @@ function getPRList(workouts) {
   const map = {};
   completed.forEach((workout) => {
     (workout.exercises || []).forEach((exercise) => {
-      if (cardioUtil.isCardio(exercise)) return;
+      if (cardioUtil.isCardio(exercise)) {
+        const cardioType = cardioUtil.typeFromExercise(exercise);
+        const cardio = cardioUtil.create(cardioType, exercise.cardio);
+        if (!cardioUtil.isValid(cardio)) return;
+        const score = cardioUtil.durationSeconds(cardio);
+        const current = map[exercise.exerciseId];
+        if (!current || score > current.score) {
+          map[exercise.exerciseId] = {
+            exerciseId: exercise.exerciseId,
+            exerciseName: exercise.name,
+            muscle: exercise.muscle,
+            type: 'cardio',
+            cardio,
+            cardioType,
+            set: null,
+            score,
+            workoutId: workout.id,
+            achievedAt: workout.endedAt || workout.startedAt
+          };
+        }
+        return;
+      }
+
       const sets = (exercise.sets || []).filter((set) => set.completed);
       if (!sets.length) return;
       const best = sets.reduce((winner, set) => (
         bestSetScore(set, exercise.type) > bestSetScore(winner, exercise.type) ? set : winner
       ), sets[0]);
+      const score = bestSetScore(best, exercise.type);
       const current = map[exercise.exerciseId];
-      if (!current || bestSetScore(best, exercise.type) > bestSetScore(current.set, exercise.type)) {
+      if (!current || score > current.score) {
         map[exercise.exerciseId] = {
           exerciseId: exercise.exerciseId,
           exerciseName: exercise.name,
           muscle: exercise.muscle,
           type: exercise.type,
           set: best,
+          score,
           workoutId: workout.id,
           achievedAt: workout.endedAt || workout.startedAt
         };

@@ -5,6 +5,7 @@ const dateUtil = require('../../utils/date');
 const format = require('../../utils/format');
 const exercisesUtil = require('../../utils/exercises');
 const trendViewUtil = require('../../utils/trend-view');
+const cardioUtil = require('../../utils/cardio');
 
 Page({
   data: {
@@ -18,8 +19,10 @@ Page({
       remaining: 3
     },
     weeklyVolumeLabel: '0 kg',
-    fourWeeks: [],
     prs: [],
+    prsAll: [],
+    prCount: 0,
+    prExpanded: false,
     muscleDist: [],
     exerciseOptions: [],
     selectedExerciseIndex: 0,
@@ -58,21 +61,28 @@ Page({
     const unit = db.settings.unit || 'kg';
     const completed = workoutUtil.getCompletedWorkouts(db.workouts);
     const weekly = workoutUtil.getWeeklyStats(db.workouts, db.settings.weeklyGoal);
-    const fourWeeks = workoutUtil.getFourWeekStats(db.workouts);
     const muscleDist = workoutUtil.getMuscleDistribution(db.workouts, 28);
-    const prs = workoutUtil.getPRList(db.workouts).slice(0, 6).map((item) => {
+    const prsAll = workoutUtil.getPRList(db.workouts).map((item) => {
       const type = item.type;
       let displayValue = '';
       let metricLabel = '最佳表现';
+      let detail = '';
       if (type === 'weight_reps') {
         displayValue = format.formatWeight(format.estimated1RM(item.set.weight, item.set.reps), unit);
         metricLabel = '估算 1RM';
+        detail = format.formatSetLine(item.set, type, unit);
       } else if (type === 'time') {
         displayValue = `${Number(item.set.duration) || 0} 秒`;
         metricLabel = '最长计时';
+        detail = format.formatSetLine(item.set, type, unit);
+      } else if (type === 'cardio') {
+        displayValue = cardioUtil.formatDuration(item.score);
+        metricLabel = '有氧时长';
+        detail = cardioUtil.summary(item.cardio, item.cardioType);
       } else {
         displayValue = `${Number(item.set.reps) || 0} 次`;
         metricLabel = '最多次数';
+        detail = format.formatSetLine(item.set, type, unit);
       }
       return {
         exerciseId: item.exerciseId,
@@ -80,10 +90,11 @@ Page({
         muscle: item.muscle,
         metricLabel,
         displayValue,
-        detail: format.formatSetLine(item.set, type, unit),
+        detail,
         dateLabel: dateUtil.formatRelativeDate(item.achievedAt)
       };
     });
+    const prs = this.data.prExpanded ? prsAll : prsAll.slice(0, 4);
 
     const exerciseOptions = workoutUtil.getExerciseOptions(db.workouts);
     let selectedExerciseIndex = this.data.selectedExerciseIndex || 0;
@@ -112,8 +123,9 @@ Page({
       unit,
       weekly,
       weeklyVolumeLabel: format.formatVolume(weekly.volumeKg, unit),
-      fourWeeks,
       prs,
+      prsAll,
+      prCount: prsAll.length,
       muscleDist,
       exerciseOptions,
       selectedExerciseIndex,
@@ -135,7 +147,16 @@ Page({
     }));
   },
 
+  togglePrList() {
+    const expanded = !this.data.prExpanded;
+    this.setData({
+      prExpanded: expanded,
+      prs: expanded ? this.data.prsAll : this.data.prsAll.slice(0, 4)
+    });
+  },
+
   onExerciseChange(e) {
+
     const index = Number(e.detail.value) || 0;
     const selected = this.data.exerciseOptions[index];
     if (!selected) return;

@@ -142,3 +142,27 @@
 .week-value {
   min-height: 28rpx;
 }
+
+.pr-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+}
+
+.pr-toggle {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+  color: var(--primary);
+  font-size: 22rpx;
+  font-weight: 600;
+}
+
+.pr-arrow {
+  display: inline-block;
+  transition: transform 160ms ease;
+}
+
+.pr-arrow.expanded {
+  transform: rotate(180deg);
+}
