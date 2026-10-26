@@ -61,7 +61,7 @@
   <view class="section-head">
     <view>
       <view class="section-title">最近动作</view>
-      <view class="section-sub">快速查看历史表现</view>
+      <view class="section-sub">{{recentCount}} 个动作 · 快速查看历史表现</view>
     </view>
   </view>
 
@@ -74,6 +74,11 @@
         </view>
         <view class="chevron">›</view>
       </view>
+    </view>
+
+    <view wx:if="{{recentCount > 4}}" class="recent-list-toggle" bindtap="toggleRecentExercises">
+      <text>{{recentExpanded ? '收起' : '查看全部'}}</text>
+      <view class="recent-chevron {{recentExpanded ? 'expanded' : ''}}"></view>
     </view>
   </view>
 

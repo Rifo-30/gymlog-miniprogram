@@ -10,6 +10,9 @@ Page({
     activeWorkout: null,
     lastWorkout: null,
     recentExercises: [],
+    recentExercisesAll: [],
+    recentCount: 0,
+    recentExpanded: false,
     muscles: exercisesUtil.MUSCLES,
     totalWorkouts: 0
   },
@@ -72,8 +75,8 @@ Page({
     } : null;
 
     const allExercises = exercisesUtil.getAll(db.customExercises);
-    const recentIds = workoutUtil.getRecentExerciseIds(db.workouts, 6);
-    const recentExercises = recentIds.map((id) => {
+    const recentIds = workoutUtil.getRecentExerciseIds(db.workouts, 200);
+    const recentExercisesAll = recentIds.map((id) => {
       const exercise = allExercises.find((item) => item.id === id);
       if (!exercise) return null;
       const last = workoutUtil.getLastExercisePerformance(db.workouts, id);
@@ -85,6 +88,9 @@ Page({
         lastLabel: last ? dateUtil.formatRelativeDate(last.workout.endedAt || last.workout.startedAt) : ''
       };
     }).filter(Boolean);
+    const recentExercises = this.data.recentExpanded
+      ? recentExercisesAll
+      : recentExercisesAll.slice(0, 4);
 
     this.setData({
       activeWorkout: active,
@@ -95,6 +101,8 @@ Page({
         exerciseCount: (completed[0].exercises || []).length
       } : null,
       recentExercises,
+      recentExercisesAll,
+      recentCount: recentExercisesAll.length,
       totalWorkouts: completed.length
     });
   },
@@ -132,7 +140,18 @@ Page({
     wx.navigateTo({ url: '/pages/workout/workout' });
   },
 
+  toggleRecentExercises() {
+    const expanded = !this.data.recentExpanded;
+    this.setData({
+      recentExpanded: expanded,
+      recentExercises: expanded
+        ? this.data.recentExercisesAll
+        : this.data.recentExercisesAll.slice(0, 4)
+    });
+  },
+
   openPicker() {
+
     wx.navigateTo({ url: '/pages/exercise-picker/exercise-picker?mode=browse' });
   },
 
