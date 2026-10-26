@@ -26,13 +26,7 @@
         <view class="section-title">个人纪录</view>
         <view class="section-sub">{{prCount}} 个动作 · 按最近训练排序</view>
       </view>
-      <view class="pr-head-actions">
-        <view wx:if="{{prCount > 4}}" class="pr-toggle" bindtap="togglePrList">
-          <text>{{prExpanded ? '收起' : '查看全部'}}</text>
-          <text class="pr-arrow {{prExpanded ? 'expanded' : ''}}">⌄</text>
-        </view>
-        <view class="help-link" bindtap="showPRHelp">PR 是什么？</view>
-      </view>
+      <view class="help-link" bindtap="showPRHelp">PR 是什么？</view>
     </view>
 
     <view wx:if="{{prs.length}}" class="card card-flat">
@@ -47,6 +41,11 @@
           </view>
           <view class="pr-value num">{{item.displayValue}}</view>
         </view>
+      </view>
+
+      <view wx:if="{{prCount > 4}}" class="pr-list-toggle" bindtap="togglePrList">
+        <text>{{prExpanded ? '收起' : '查看全部'}}</text>
+        <text class="pr-arrow {{prExpanded ? 'expanded' : ''}}">⌄</text>
       </view>
     </view>
 
