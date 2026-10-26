@@ -52,11 +52,11 @@
         <view class="trend-legend">
           <view class="legend-item">
             <view class="legend-line"></view>
-            <text>{{trendPrimaryAxisLabel}} · {{trendPrimaryMinLabel}}–{{trendPrimaryMaxLabel}}</text>
+            <text>{{trendPrimaryAxisLabel}}</text>
           </view>
           <view class="legend-item">
             <view class="legend-bar"></view>
-            <text>{{trendSecondaryAxisLabel}} · 0–{{trendSecondaryMaxLabel}}</text>
+            <text>{{trendSecondaryAxisLabel}}</text>
           </view>
         </view>
       </view>
