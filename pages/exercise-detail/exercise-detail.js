@@ -140,10 +140,14 @@ Page({
     const points = this.data.trendPoints.map((point) => Object.assign({}, point, {
       selected: point.index === index
     }));
+    const barLabels = this.data.trendBarLabels.map((label) => Object.assign({}, label, {
+      selected: label.index === index
+    }));
     this.setData({
       selectedTrend: selected,
       selectedTrendIndex: index,
-      trendPoints: points
+      trendPoints: points,
+      trendBarLabels: barLabels
     });
   },
 
