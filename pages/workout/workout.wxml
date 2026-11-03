@@ -1,3 +1,4 @@
+<page-meta page-style="{{showLastRecord ? 'overflow: hidden;' : ''}}"></page-meta>
 <view class="page theme-{{theme}} workout-page">
   <view wx:if="{{workout}}">
     <view class="workout-head">

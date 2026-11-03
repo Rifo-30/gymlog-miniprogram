@@ -408,6 +408,7 @@
   width: 100%;
   max-height: 82vh;
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 18rpx 30rpx calc(28rpx + env(safe-area-inset-bottom));
   border-radius: 36rpx 36rpx 0 0;
   background: var(--surface);
