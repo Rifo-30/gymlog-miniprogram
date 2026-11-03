@@ -15,6 +15,9 @@ Page({
     totalSets: 0,
     cardioCount: 0,
     profileWeightKg: 0,
+    showLastRecord: false,
+    lastRecordExerciseIndex: -1,
+    lastRecord: null,
     restActive: false,
     restLabel: '00:00',
     restTotal: 90,
@@ -295,7 +298,101 @@ Page({
     });
   },
 
+  openLastRecord(e) {
+    const index = Number(e.currentTarget.dataset.ex);
+    const currentExercise = this.data.workout && this.data.workout.exercises[index];
+    if (!currentExercise) return;
+    const db = storage.getDB();
+    const performance = workoutUtil.getLastExercisePerformance(db.workouts, currentExercise.exerciseId);
+    if (!performance) {
+      wx.showToast({ title: '这个动作还没有上次记录', icon: 'none' });
+      return;
+    }
+
+    const isCardio = cardioUtil.isCardio(performance.exercise);
+    let sets = [];
+    let summary = '';
+    if (isCardio) {
+      summary = cardioUtil.summary(
+        performance.cardio,
+        cardioUtil.typeFromExercise(performance.exercise)
+      );
+    } else {
+      const completedSets = (performance.exercise.sets || []).filter((set) => set.completed);
+      sets = completedSets.map((set, setIndex) => ({
+        index: setIndex + 1,
+        line: format.formatSetLine(set, performance.exercise.type, this.data.unit)
+      }));
+      summary = `${format.formatSetLine(performance.last, performance.exercise.type, this.data.unit)} · ${completedSets.length} 组`;
+    }
+
+    this.setData({
+      showLastRecord: true,
+      lastRecordExerciseIndex: index,
+      lastRecord: {
+        exerciseName: currentExercise.name,
+        workoutName: performance.workout.name || '自由训练',
+        dateLabel: dateUtil.formatDateLabel(performance.workout.endedAt || performance.workout.startedAt),
+        summary,
+        sets,
+        isCardio,
+        copyHint: isCardio
+          ? '将复制这次有氧数据到当前训练。'
+          : `将复制 ${sets.length} 组到当前训练，新组默认未完成。`
+      }
+    });
+  },
+
+  closeLastRecord() {
+    this.setData({
+      showLastRecord: false,
+      lastRecordExerciseIndex: -1
+    });
+  },
+
+  noop() {},
+
+  copyLastRecordToToday() {
+    const index = this.data.lastRecordExerciseIndex;
+    if (index < 0 || !this.data.workout) return;
+    const workout = JSON.parse(JSON.stringify(this.data.workout));
+    const exercise = workout.exercises[index];
+    const db = storage.getDB();
+    const performance = workoutUtil.getLastExercisePerformance(db.workouts, exercise.exerciseId);
+    if (!performance) {
+      this.closeLastRecord();
+      wx.showToast({ title: '上次记录已不存在', icon: 'none' });
+      return;
+    }
+
+    if (cardioUtil.isCardio(exercise)) {
+      const cardio = cardioUtil.create(exercise.cardioType, performance.cardio);
+      this.applyCardioValues(exercise, cardio, null, null, false);
+    } else {
+      const previousSets = (performance.exercise.sets || []).filter((set) => set.completed);
+      exercise.sets = previousSets.map((set) => {
+        const next = workoutUtil.createSet(exercise.type, set);
+        next.weightDisplay = format.weightToDisplay(next.weight || 0, this.data.unit);
+        next.note = set.note || '';
+        return next;
+      });
+      if (!exercise.sets.length) exercise.sets = [workoutUtil.createSet(exercise.type)];
+    }
+
+    this.setData({
+      workout,
+      totalSets: workoutUtil.countCompletedSets(workout),
+      cardioCount: this.countCardio(workout),
+      showLastRecord: false,
+      lastRecordExerciseIndex: -1
+    }, () => {
+      this.persistWorkout();
+      wx.showToast({ title: '已复制上次记录', icon: 'success' });
+    });
+  },
+
   addExercise() {
+
     wx.navigateTo({
       url: '/pages/exercise-picker/exercise-picker',
       events: {

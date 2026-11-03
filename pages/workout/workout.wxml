@@ -30,7 +30,10 @@
           <view class="more-btn">···</view>
         </view>
 
-        <view wx:if="{{exercise.lastHint}}" class="last-hint mt-12">上次 {{exercise.lastHint}}</view>
+        <view wx:if="{{exercise.lastHint}}" class="last-hint mt-12" data-ex="{{ei}}" bindtap="openLastRecord">
+          <text>上次 {{exercise.lastHint}}</text>
+          <text class="last-hint-more">查看 ›</text>
+        </view>
 
         <block wx:if="{{exercise.isCardio}}">
           <view class="cardio-top mt-16">
@@ -233,6 +236,41 @@
     <view class="card session-note mt-24">
       <view class="section-title">训练备注</view>
       <textarea class="note-input mt-12" placeholder="今天的状态、疼痛、器械调整..." placeholder-class="input-placeholder" value="{{workout.note}}" bindinput="onWorkoutNoteInput" bindblur="persistWorkout" />
+    </view>
+  </view>
+
+  <view wx:if="{{showLastRecord}}" class="last-record-mask" catchtap="closeLastRecord">
+    <view class="last-record-sheet" catchtap="noop">
+      <view class="grabber"></view>
+      <view class="row between">
+        <view>
+          <view class="h2">上次记录</view>
+          <view class="tiny muted mt-8">{{lastRecord.dateLabel}} · {{lastRecord.workoutName}}</view>
+        </view>
+        <view class="last-record-close" bindtap="closeLastRecord">×</view>
+      </view>
+
+      <view class="last-record-summary mt-16">
+        <view class="row between">
+          <view class="last-record-exercise">{{lastRecord.exerciseName}}</view>
+          <view class="tiny text-primary">{{lastRecord.isCardio ? '有氧' : lastRecord.sets.length + ' 组'}}</view>
+        </view>
+        <view class="tiny muted mt-8">{{lastRecord.summary}}</view>
+      </view>
+
+      <view wx:if="{{lastRecord.sets.length}}" class="last-record-list mt-16">
+        <view wx:for="{{lastRecord.sets}}" wx:key="index" class="last-record-row">
+          <view class="last-record-index">{{item.index}}</view>
+          <view class="last-record-value">{{item.line}}</view>
+        </view>
+      </view>
+
+      <view class="last-record-hint mt-12">{{lastRecord.copyHint}}</view>
+
+      <view class="row gap-12 mt-24">
+        <button class="btn btn-ghost grow" bindtap="closeLastRecord">取消</button>
+        <button class="btn btn-primary grow" bindtap="copyLastRecordToToday">复制到今天</button>
+      </view>
     </view>
   </view>
 
