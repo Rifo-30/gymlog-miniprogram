@@ -12,11 +12,9 @@ function csvEscape(value) {
 function buildExport(db) {
   return {
     app: '练记',
-    version: 2,
+    version: 1,
     exportedAt: timeUtil.nowChinaIso(),
     settings: db.settings,
-    profile: db.profile || null,
-    templates: db.templates || [],
     workouts: db.workouts,
     customExercises: db.customExercises
   };

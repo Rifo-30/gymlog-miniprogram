@@ -37,7 +37,6 @@
     <view class="quick-row mt-16">
       <view class="quick-item" bindtap="repeatLast">复制上次</view>
       <view class="quick-item" bindtap="goTraining">动作库</view>
-      <view class="quick-item" bindtap="goTemplates">训练模板<text wx:if="{{templateCount}}" class="quick-count">{{templateCount}}</text></view>
       <view class="quick-item" bindtap="goStats">看趋势</view>
     </view>
   </view>

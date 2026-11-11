@@ -30,7 +30,6 @@ function createDefaultDB() {
     activeWorkout: null,
     activeWorkoutUpdatedAt: EPOCH,
     customExercises: [],
-    templates: [],
     profile: {
       nickName: '',
       avatarUrl: '',
@@ -42,7 +41,6 @@ function createDefaultDB() {
     },
     deletedWorkouts: [],
     deletedCustomExercises: [],
-    deletedTemplates: [],
     updatedAt: EPOCH
   };
 }
@@ -54,11 +52,9 @@ function normalizeDB(raw) {
   db.settings = Object.assign({}, defaults.settings, db.settings || {});
   db.workouts = Array.isArray(db.workouts) ? db.workouts : [];
   db.customExercises = Array.isArray(db.customExercises) ? db.customExercises : [];
-  db.templates = Array.isArray(db.templates) ? db.templates : [];
   db.profile = Object.assign({ nickName: '', avatarUrl: '', avatarFileId: '', heightCm: 0, weightKg: 0, displayName: '', updatedAt: EPOCH }, db.profile || {});
   db.deletedWorkouts = Array.isArray(db.deletedWorkouts) ? db.deletedWorkouts : [];
   db.deletedCustomExercises = Array.isArray(db.deletedCustomExercises) ? db.deletedCustomExercises : [];
-  db.deletedTemplates = Array.isArray(db.deletedTemplates) ? db.deletedTemplates : [];
   db.activeWorkout = db.activeWorkout || null;
   db.settingsUpdatedAt = db.settingsUpdatedAt || EPOCH;
   db.activeWorkoutUpdatedAt = db.activeWorkoutUpdatedAt
@@ -163,24 +159,6 @@ function markCustomExerciseChanges(db, prev, now) {
   });
 }
 
-function markTemplateChanges(db, prev, now) {
-  const prevMap = mapById(prev.templates);
-  const nextMap = mapById(db.templates);
-
-  Object.keys(nextMap).forEach((id) => {
-    const next = nextMap[id];
-    const old = prevMap[id];
-    if (!old || !sameData(old, next)) {
-      next.updatedAt = now;
-      db.deletedTemplates = (db.deletedTemplates || []).filter((item) => item.id !== id);
-    }
-  });
-
-  Object.keys(prevMap).forEach((id) => {
-    if (!nextMap[id]) addTombstone(db.deletedTemplates, id, now);
-  });
-}
-
 function saveDB(inputDB, options) {
   const opts = options || {};
   const db = normalizeDB(deepClone(inputDB));
@@ -204,13 +182,11 @@ function saveDB(inputDB, options) {
 
       markWorkoutChanges(db, prev, now);
       markCustomExerciseChanges(db, prev, now);
-      markTemplateChanges(db, prev, now);
       db.updatedAt = now;
     }
 
     db.deletedWorkouts = pruneTombstones(db.deletedWorkouts);
     db.deletedCustomExercises = pruneTombstones(db.deletedCustomExercises);
-    db.deletedTemplates = pruneTombstones(db.deletedTemplates);
 
     wx.setStorageSync(DB_KEY, db);
     if (!opts.skipNotify && changeHandler) {

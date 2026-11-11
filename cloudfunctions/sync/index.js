@@ -87,51 +87,6 @@ async function fetchAll(collectionName, openid) {
   return result;
 }
 
-function mergeItemArrays(localItems, localTombstones, cloudItems, cloudTombstones) {
-  const localMap = mapById(localItems);
-  const cloudMap = mapById(cloudItems);
-  const localTombMap = mapTombstones(localTombstones);
-  const cloudTombMap = mapTombstones(cloudTombstones);
-  const ids = new Set([
-    ...Object.keys(localMap),
-    ...Object.keys(cloudMap),
-    ...Object.keys(localTombMap),
-    ...Object.keys(cloudTombMap)
-  ]);
-  const items = [];
-  const tombstones = [];
-
-  ids.forEach((id) => {
-    const localItem = localMap[id] || null;
-    const cloudItem = cloudMap[id] || null;
-    const localTomb = localTombMap[id] || null;
-    const cloudTomb = cloudTombMap[id] || null;
-    const localItemAt = localItem ? timestamp(localItem.updatedAt) : 0;
-    const cloudItemAt = cloudItem ? timestamp(cloudItem.updatedAt) : 0;
-    const localDeletedAt = localTomb ? timestamp(localTomb.deletedAt) : 0;
-    const cloudDeletedAt = cloudTomb ? timestamp(cloudTomb.deletedAt) : 0;
-
-    if (localDeletedAt && localDeletedAt >= Math.max(localItemAt, cloudItemAt, cloudDeletedAt)) {
-      tombstones.push({ id, deletedAt: localTomb.deletedAt });
-      return;
-    }
-    if (cloudDeletedAt && cloudDeletedAt >= Math.max(localItemAt, cloudItemAt, localDeletedAt)) {
-      tombstones.push({ id, deletedAt: cloudTomb.deletedAt });
-      return;
-    }
-    if (localItem && (!cloudItem || localItemAt >= cloudItemAt)) {
-      items.push(localItem);
-      return;
-    }
-    if (cloudItem) items.push(cloudItem);
-  });
-
-  return {
-    items,
-    tombstones: pruneTombstones(tombstones)
-  };
-}
-
 async function mergeCollection(options) {
   const {
     openid,
@@ -303,13 +258,6 @@ exports.main = async (event, context) => {
 
     const cloudWorkoutTombstones = (profile && profile.deletedWorkouts) || [];
     const cloudExerciseTombstones = (profile && profile.deletedCustomExercises) || [];
-    const cloudTemplateTombstones = (profile && profile.deletedTemplates) || [];
-    const templates = mergeItemArrays(
-      local.templates || [],
-      local.deletedTemplates || [],
-      (profile && profile.templates) || [],
-      cloudTemplateTombstones
-    );
 
     const workouts = await mergeCollection({
       openid: OPENID,
@@ -374,8 +322,6 @@ exports.main = async (event, context) => {
         profileUpdatedAt,
         deletedWorkouts: Object.keys(mergedDeletedWorkouts).map((key) => mergedDeletedWorkouts[key]),
         deletedCustomExercises: Object.keys(mergedDeletedExercises).map((key) => mergedDeletedExercises[key]),
-        templates: templates.items,
-        deletedTemplates: templates.tombstones,
         updatedAt: now
       }
     });
@@ -394,10 +340,8 @@ exports.main = async (event, context) => {
         profileUpdatedAt,
         workouts: workouts.items,
         customExercises: exercises.items,
-        templates: templates.items,
         deletedWorkouts: Object.keys(mergedDeletedWorkouts).map((key) => mergedDeletedWorkouts[key]),
         deletedCustomExercises: Object.keys(mergedDeletedExercises).map((key) => mergedDeletedExercises[key]),
-        deletedTemplates: templates.tombstones,
         updatedAt: local.updatedAt || EPOCH
       }
     };

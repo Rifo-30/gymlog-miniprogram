@@ -7,8 +7,6 @@
     "pages/exercise-picker/exercise-picker",
     "pages/exercise-detail/exercise-detail",
     "pages/history/history",
-    "pages/template-edit/template-edit",
-    "pages/templates/templates",
     "pages/workout-detail/workout-detail",
     "pages/stats/stats",
     "pages/settings/settings",

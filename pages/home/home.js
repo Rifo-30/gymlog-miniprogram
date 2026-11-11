@@ -3,7 +3,6 @@ const storage = require('../../utils/storage');
 const workoutUtil = require('../../utils/workout');
 const dateUtil = require('../../utils/date');
 const format = require('../../utils/format');
-const templateUtil = require('../../utils/templates');
 
 function greeting() {
   const hour = new Date().getHours();
@@ -30,7 +29,6 @@ Page({
       remaining: 3
     },
     weeklyVolumeLabel: '0 kg',
-    templateCount: 0,
     totalWorkouts: 0
   },
 
@@ -97,7 +95,6 @@ Page({
       recentWorkouts: recent,
       weekly,
       weeklyVolumeLabel: format.formatVolume(weekly.volumeKg, unit),
-      templateCount: templateUtil.getTemplates(db.templates).length,
       totalWorkouts: completed.length
     });
   },
@@ -173,10 +170,6 @@ Page({
 
   goTraining() {
     wx.switchTab({ url: '/pages/training/training' });
-  },
-
-  goTemplates() {
-    wx.navigateTo({ url: '/pages/templates/templates' });
   },
 
   goHistory() {
