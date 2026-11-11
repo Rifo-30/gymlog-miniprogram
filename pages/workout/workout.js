@@ -5,6 +5,7 @@ const format = require('../../utils/format');
 const dateUtil = require('../../utils/date');
 const cardioUtil = require('../../utils/cardio');
 const timeUtil = require('../../utils/time');
+const progressionUtil = require('../../utils/progression');
 
 Page({
   data: {
@@ -137,6 +138,17 @@ Page({
           db.profile && db.profile.weightKg
         )
         : null;
+      let targetLabel = '';
+      if (isCardio && Number(exercise.targetDurationMin) > 0) {
+        targetLabel = `目标 ${Number(exercise.targetDurationMin)} 分钟`;
+      } else if (Number(exercise.targetSets) > 0) {
+        targetLabel = `目标 ${Number(exercise.targetSets)} 组`;
+        if (Number(exercise.targetReps) > 0) {
+          targetLabel += ` × ${Number(exercise.targetReps)} 次`;
+        } else if (Number(exercise.targetDurationMin) > 0) {
+          targetLabel += ` × ${Number(exercise.targetDurationMin)} 分钟`;
+        }
+      }
       return Object.assign({}, exercise, {
         isCardio,
         cardioType,
@@ -144,6 +156,8 @@ Page({
         cardio,
         completed: isCardio ? cardio.valid : !!exercise.completed,
         lastHint: workoutUtil.formatLastHint(performance, exercise.type, unit, db.profile && db.profile.weightKg),
+        suggestion: this._isEditing ? null : progressionUtil.suggest(otherWorkouts, exercise, unit),
+        targetLabel,
         showNote: !!exercise.note,
         sets: (exercise.sets || []).map((set) => Object.assign({}, set, {
           weightDisplay: format.weightToDisplay(set.weight || 0, unit)
@@ -429,6 +443,58 @@ Page({
       this.persistWorkout();
       wx.vibrateShort({});
       wx.pageScrollTo({ scrollTop: 99999, duration: 300 });
+    });
+  },
+
+  applySuggestion(e) {
+    const index = Number(e.currentTarget.dataset.ex);
+    if (!this.data.workout || !this.data.workout.exercises[index]) return;
+    const workout = JSON.parse(JSON.stringify(this.data.workout));
+    const exercise = workout.exercises[index];
+    const suggestion = exercise.suggestion;
+    if (!suggestion || !suggestion.available) return;
+
+    if (cardioUtil.isCardio(exercise)) {
+      const cardio = cardioUtil.create(exercise.cardioType, exercise.cardio);
+      if (cardio.mode !== 'interval' && Number(suggestion.duration) > 0) {
+        cardio.durationSec = Number(suggestion.duration);
+      }
+      this.applyCardioValues(exercise, cardio, null, null, true);
+    } else {
+      if (!Array.isArray(exercise.sets)) exercise.sets = [];
+      while (exercise.sets.length < suggestion.sets) {
+        exercise.sets.push(workoutUtil.createSet(
+          exercise.type,
+          exercise.sets[exercise.sets.length - 1] || { reps: suggestion.reps, duration: suggestion.duration }
+        ));
+      }
+      const incomplete = exercise.sets.filter((set) => !set.completed);
+      if (!incomplete.length) {
+        wx.showToast({ title: '当前组都已完成，可先添加一组', icon: 'none' });
+        return;
+      }
+      exercise.sets.forEach((set) => {
+        if (set.completed) return;
+        if (exercise.type === 'weight_reps') {
+          set.weight = Number(suggestion.weight) || 0;
+          set.weightDisplay = format.weightToDisplay(set.weight, this.data.unit);
+          set.reps = Number(suggestion.reps) || 0;
+        } else if (exercise.type === 'reps') {
+          set.reps = Number(suggestion.reps) || 0;
+        } else {
+          set.duration = Number(suggestion.duration) || 0;
+        }
+      });
+    }
+
+    this.setData({
+      workout,
+      totalSets: workoutUtil.countCompletedSets(workout),
+      cardioCount: this.countCardio(workout)
+    }, () => {
+      this.persistWorkout();
+      wx.vibrateShort({});
+      wx.showToast({ title: '已采用建议', icon: 'success' });
     });
   },
 

@@ -129,3 +129,47 @@
 .recent-chevron.expanded {
   transform: rotate(225deg);
 }
+
+.template-quick-card {
+  padding: 26rpx;
+}
+
+.template-quick-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.template-quick-row,
+.template-empty-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  min-height: 88rpx;
+  padding: 14rpx 16rpx;
+  border-radius: 20rpx;
+  background: var(--surface-2);
+}
+
+.template-quick-name {
+  color: var(--text);
+  font-size: 27rpx;
+  font-weight: 650;
+}
+
+.template-quick-meta {
+  margin-top: 5rpx;
+  color: var(--muted);
+  font-size: 20rpx;
+  line-height: 1.45;
+}
+
+.template-quick-start {
+  flex: none;
+  padding: 8rpx 14rpx;
+  border-radius: 14rpx;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 21rpx;
+  font-weight: 700;
+}

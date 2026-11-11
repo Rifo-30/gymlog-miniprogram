@@ -104,6 +104,7 @@ function stripWorkoutForStorage(workout) {
     const next = Object.assign({}, exercise);
     delete next.lastHint;
     delete next.showNote;
+    delete next.suggestion;
     if (next.cardio) {
       next.cardio = cardioUtil.create(next.cardioType, next.cardio);
     }

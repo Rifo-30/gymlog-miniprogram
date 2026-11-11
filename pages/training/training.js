@@ -3,6 +3,7 @@ const storage = require('../../utils/storage');
 const workoutUtil = require('../../utils/workout');
 const exercisesUtil = require('../../utils/exercises');
 const dateUtil = require('../../utils/date');
+const templateUtil = require('../../utils/templates');
 
 Page({
   data: {
@@ -14,6 +15,8 @@ Page({
     recentCount: 0,
     recentExpanded: false,
     muscles: exercisesUtil.MUSCLES,
+    templates: [],
+    templateCount: 0,
     totalWorkouts: 0
   },
 
@@ -91,6 +94,12 @@ Page({
     const recentExercises = this.data.recentExpanded
       ? recentExercisesAll
       : recentExercisesAll.slice(0, 4);
+    const allTemplates = templateUtil.getTemplates(db.templates);
+    const templates = allTemplates.slice(0, 3).map((template) => ({
+      id: template.id,
+      name: template.name,
+      meta: `${template.exercises.length} 个动作 · ${template.exercises.slice(0, 3).map((exercise) => exercise.name).join(' · ')}`
+    }));
 
     this.setData({
       activeWorkout: active,
@@ -103,6 +112,8 @@ Page({
       recentExercises,
       recentExercisesAll,
       recentCount: recentExercisesAll.length,
+      templates,
+      templateCount: allTemplates.length,
       totalWorkouts: completed.length
     });
   },
@@ -135,6 +146,28 @@ Page({
       return;
     }
     const workout = workoutUtil.duplicateWorkout(completed[0]);
+    db.activeWorkout = workout;
+    storage.saveDB(db);
+    wx.navigateTo({ url: '/pages/workout/workout' });
+  },
+
+  openTemplates() {
+    wx.navigateTo({ url: '/pages/templates/templates' });
+  },
+
+  startTemplate(e) {
+    const id = e.currentTarget.dataset.id;
+    const db = storage.getDB();
+    if (db.activeWorkout) {
+      wx.navigateTo({ url: '/pages/workout/workout' });
+      return;
+    }
+    const template = templateUtil.findTemplate(db.templates, id);
+    if (!template) {
+      wx.showToast({ title: '模板不存在', icon: 'none' });
+      return;
+    }
+    const workout = templateUtil.createWorkoutFromTemplate(template, db);
     db.activeWorkout = workout;
     storage.saveDB(db);
     wx.navigateTo({ url: '/pages/workout/workout' });

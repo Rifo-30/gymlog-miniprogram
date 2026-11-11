@@ -34,6 +34,33 @@
     </view>
   </view>
 
+  <view class="card template-quick-card mt-24">
+    <view class="row between">
+      <view>
+        <view class="section-title">训练模板</view>
+        <view class="section-sub">{{templateCount ? templateCount + ' 个模板 · 直接开始常练计划' : '固定今天的动作和目标组次'}}</view>
+      </view>
+      <view class="tiny muted" bindtap="openTemplates">管理 →</view>
+    </view>
+
+    <view wx:if="{{templates.length}}" class="template-quick-list mt-16">
+      <view wx:for="{{templates}}" wx:key="id" class="template-quick-row" data-id="{{item.id}}" bindtap="startTemplate">
+        <view class="grow">
+          <view class="template-quick-name">{{item.name}}</view>
+          <view class="template-quick-meta">{{item.meta}}</view>
+        </view>
+        <view class="template-quick-start">开始</view>
+      </view>
+    </view>
+    <view wx:else class="template-empty-row mt-16" bindtap="openTemplates">
+      <view class="grow">
+        <view class="template-quick-name">还没有模板</view>
+        <view class="template-quick-meta">创建一个，下次不用重新想动作</view>
+      </view>
+      <view class="template-quick-start">新建</view>
+    </view>
+  </view>
+
   <view class="card mt-24" bindtap="openPicker">
     <view class="row between">
       <view>

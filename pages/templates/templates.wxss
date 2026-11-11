@@ -1,0 +1,68 @@
+.templates-page {
+  padding-bottom: calc(48rpx + env(safe-area-inset-bottom));
+}
+
+.template-count {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20rpx;
+  background: var(--surface-2);
+  color: var(--primary);
+  font-size: 26rpx;
+  font-weight: 750;
+}
+
+.template-card {
+  padding: 26rpx;
+}
+
+.template-list .template-card + .template-card {
+  margin-top: 16rpx;
+}
+
+.template-name {
+  color: var(--text);
+  font-size: 32rpx;
+  font-weight: 700;
+}
+
+.template-action-count {
+  flex: none;
+  padding: 7rpx 12rpx;
+  border-radius: 999rpx;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 20rpx;
+}
+
+.template-preview {
+  color: var(--text-2);
+  font-size: 24rpx;
+  line-height: 1.55;
+}
+
+.template-note {
+  padding: 12rpx 14rpx;
+  border-radius: 14rpx;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 22rpx;
+  line-height: 1.5;
+}
+
+.template-actions {
+  display: flex;
+  gap: 12rpx;
+}
+
+.template-tip {
+  padding: 18rpx 20rpx;
+  border-radius: 20rpx;
+  background: var(--primary-soft);
+  color: var(--muted);
+  font-size: 21rpx;
+  line-height: 1.6;
+}

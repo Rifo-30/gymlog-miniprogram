@@ -86,3 +86,23 @@
 .home-foot {
   padding: 12rpx 0 32rpx;
 }
+
+.quick-item {
+  gap: 5rpx;
+  padding: 0 8rpx;
+  white-space: nowrap;
+}
+
+.quick-count {
+  min-width: 28rpx;
+  height: 28rpx;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5rpx;
+  border-radius: 999rpx;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 17rpx;
+  font-weight: 750;
+}

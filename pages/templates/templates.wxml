@@ -1,0 +1,46 @@
+<view class="page theme-{{theme}} templates-page">
+  <view class="page-top">
+    <view class="row between">
+      <view>
+        <view class="h1">训练模板</view>
+        <view class="muted small mt-8">固定动作和目标，重量交给渐进建议。</view>
+      </view>
+      <view class="template-count">{{count}}</view>
+    </view>
+  </view>
+
+  <view wx:if="{{templates.length}}" class="template-list mt-24">
+    <view wx:for="{{templates}}" wx:key="id" class="card template-card">
+      <view class="row between">
+        <view class="grow">
+          <view class="template-name">{{item.name}}</view>
+          <view class="muted tiny mt-8">{{item.metaLabel}}</view>
+        </view>
+        <view class="template-action-count">{{item.exerciseCount}} 动作</view>
+      </view>
+
+      <view class="template-preview mt-12">{{item.preview}}</view>
+      <view wx:if="{{item.note}}" class="template-note mt-8">{{item.note}}</view>
+
+      <view class="template-actions mt-16">
+        <button class="btn btn-primary btn-sm grow" data-id="{{item.id}}" bindtap="startTemplate">开始训练</button>
+        <button class="btn btn-ghost btn-sm" data-id="{{item.id}}" bindtap="editTemplate">编辑</button>
+        <button class="btn btn-danger btn-sm" data-id="{{item.id}}" bindtap="removeTemplate">删除</button>
+      </view>
+    </view>
+  </view>
+
+  <view wx:else class="empty mt-24">
+    <view class="empty-title">还没有训练模板</view>
+    <view class="empty-desc">把常练动作和目标组数存成模板，下次直接开始。</view>
+  </view>
+
+  <button class="btn btn-primary btn-block mt-24" bindtap="createTemplate">＋ 新建模板</button>
+  <button class="btn btn-ghost btn-block mt-12" bindtap="saveLastWorkout">
+    {{lastWorkoutName ? '把“' + lastWorkoutName + '”存为模板' : '把上次训练存为模板'}}
+  </button>
+
+  <view class="template-tip mt-24">
+    模板不会锁定重量。训练中会根据该动作最近记录给出加重、维持或减重建议，你可以一键采用或手动调整。
+  </view>
+</view>

@@ -473,3 +473,78 @@
   font-size: 21rpx;
   line-height: 1.5;
 }
+
+.suggestion-box {
+  padding: 18rpx 20rpx;
+  border-radius: 20rpx;
+  background: var(--surface-2);
+  border: 1rpx solid var(--border);
+}
+
+.suggestion-box.suggestion-increase {
+  background: var(--primary-soft);
+  border-color: rgba(199, 255, 61, 0.24);
+}
+
+.suggestion-box.suggestion-reduce {
+  background: var(--danger-soft);
+  border-color: rgba(255, 116, 116, 0.22);
+}
+
+.suggestion-head {
+  gap: 12rpx;
+}
+
+.suggestion-kicker {
+  color: var(--text-2);
+  font-size: 21rpx;
+  font-weight: 700;
+  letter-spacing: 1rpx;
+}
+
+.suggestion-action {
+  padding: 4rpx 10rpx;
+  border-radius: 999rpx;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 18rpx;
+}
+
+.suggestion-increase .suggestion-action {
+  color: var(--primary);
+  background: rgba(199, 255, 61, 0.12);
+}
+
+.suggestion-reduce .suggestion-action {
+  color: var(--danger);
+  background: rgba(255, 116, 116, 0.12);
+}
+
+.suggestion-change {
+  color: var(--muted);
+  font-size: 20rpx;
+}
+
+.suggestion-value {
+  color: var(--text);
+  font-size: 29rpx;
+  font-weight: 750;
+}
+
+.suggestion-reason {
+  color: var(--muted);
+  font-size: 20rpx;
+  line-height: 1.45;
+}
+
+.suggestion-apply {
+  flex: none;
+  height: 58rpx;
+  margin-left: 18rpx;
+  padding: 0 18rpx;
+  border-radius: 16rpx;
+  background: var(--primary);
+  color: var(--primary-ink);
+  font-size: 22rpx;
+  font-weight: 700;
+}

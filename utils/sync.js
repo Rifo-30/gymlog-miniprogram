@@ -106,6 +106,7 @@ function cleanWorkout(workout) {
     const next = Object.assign({}, exercise);
     delete next.showNote;
     delete next.lastHint;
+    delete next.suggestion;
     if (next.cardio) {
       next.cardio = cardioUtil.create(next.cardioType, next.cardio);
     }
@@ -133,9 +134,15 @@ function preferLocalProfile(remoteDB, localDB) {
   const localProfile = (localDB && localDB.profile) || {};
   const remoteAt = new Date(remoteProfile.updatedAt || 0).getTime();
   const localAt = new Date(localProfile.updatedAt || 0).getTime();
-  // Safety net for older deployed sync functions and in-flight stale responses.
+  // Safety nets for older deployed sync functions and in-flight stale responses.
   if (localProfile.nickName && (!remoteProfile.nickName || localAt > remoteAt)) {
     merged.profile = localProfile;
+  }
+  if (!Array.isArray(merged.templates)) {
+    merged.templates = (localDB && localDB.templates) || [];
+  }
+  if (!Array.isArray(merged.deletedTemplates)) {
+    merged.deletedTemplates = (localDB && localDB.deletedTemplates) || [];
   }
   return merged;
 }
